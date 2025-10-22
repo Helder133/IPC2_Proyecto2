@@ -1,0 +1,211 @@
+CREATE DATABASE IF NOT EXISTS Proyecto2;
+
+USE Proyecto2:
+
+CREATE USER 'Proyecto2'@'localhost' IDENTIFIED BY 'Proyecto22025*';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON Proyecto2.* TO 'Proyecto2'@'localhost';
+
+CREATE TABLE IF NOT EXISTS Usuario (
+	Usuario_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Nombre VARCHAR(200) NOT NULL,
+	Email VARCHAR (100) UNIQUE NOT NULL,
+	Contraseña VARCHAR (50) NOT NULL,
+	Rol ENUM('Usuario','Administrador Sistema','Administrador Cine') NOT NULL DEFAULT 'Usuario'
+);
+
+CREATE TABLE IF NOT EXISTS Cartera_Digital (
+	Cartera_Digital_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Usuario_Id INT NOT NULL,
+	Saldo DECIMAL (10,2) NOT NULL,
+	CONSTRAINT fk_Usuario1 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) 
+);
+
+CREATE TABLE IF NOT EXISTS Historial (
+	Historial_Id INT AUTO_INCREMENT PRIMARY KEY, 
+	Cartera_Digital_Id INT NOT NULL,
+	Fecha DATE NOT NULL,
+	Transaccion ENUM ('PAGO', 'DEPOSITO') NOT NULL,
+	Descripcion VARCHAR (150) NOT NULL,
+	CONSTRAINT fk_Cartera_Digital FOREIGN KEY (Cartera_Digital_Id) REFERENCES Cartera_Digital (Cartera_Digital_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Cine (
+	Cine_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Nombre VARCHAR (200) NOT NULL,
+	Telefono VARCHAR (10) NOT NULL,
+	Direccion VARCHAR (200) NOT NULL,
+	Estado ENUM ('HABILITADO','DESHABILITADO') NOT NULL DEFAULT 'HABILITADO',
+	Fecha_Creacion DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Tipo_Sala (
+	Tipo_Sala_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Nombre VARCHAR (150) NOT NULL,
+	Descripcion VARCHAR (200) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Sala (
+	Sala_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Cine_Id INT NOT NULL,
+	Tipo_Sala_Id INT NOT NULL,
+	Nombre VARCHAR (150) NOT NULL,
+	Fila INT NOT NULL,
+	Columna INT NOT NULL,
+	Estado BOOL NOT NULL DEFAULT 1,
+	Comentario_Estado BOOL NOT NULL DEFAULT 1,
+	CONSTRAINT fk_Cine1 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id),
+	CONSTRAINT fk_Tipo_Sala FOREIGN KEY (Tipo_Sala_Id) REFERENCES Tipo_Sala (Tipo_Sala_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Costo_Cine (
+	Costo_Cine_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Cine_Id INT NOT NULL,
+	Costo_Diario INT NOT NULL DEFAULT 150,
+	Fecha_Efectiva DATE NOT NULL,
+	CONSTRAINT fk_Cine2 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Admin_Cine (
+	Usuario_Id INT NOT NULL,
+	Cine_Id INT NOT NULL,
+	CONSTRAINT pk_Admin_Cine PRIMARY KEY (Usuario_Id, Cine_Id),
+	CONSTRAINT fk_Usuario2 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id),
+	CONSTRAINT fk_Cine3 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Clasificacion (
+	Clasificacion_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Nombre VARCHAR (150) NOT NULL,
+	Edad_Minima INT NOT NULL,
+	Descripcion VARCHAR (250) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Genero (
+	Genero_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Nombre VARCHAR (250) NOT NULL,
+	Descripcion VARCHAR (250) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Pelicula (
+	Pelicula_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Clasificacion_Id INT NOT NULL,
+	Titulo VARCHAR (250) NOT NULL,
+	Sinopsis TEXT NOT NULL, 
+	Director VARCHAR (150) NOT NULL,
+	Duracion_Minutos INT NOT NULL,
+	Cast_P TEXT NOT NULL,
+	Poster VARCHAR (200) NOT NULL,
+	Calificacion INT NOT NULL,
+	Estado_Comentario BOOL NOT NULL DEFAULT 1,
+	CONSTRAINT fk_Clasificacion FOREIGN KEY (Clasificacion_Id) REFERENCES Clasificacion (Clasificacion_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Poseer_Genero (
+	Pelicula_Id INT NOT NULL,
+	Genero_Id INT NOT NULL,
+	CONSTRAINT pk_Generos PRIMARY KEY (Pelicula_Id, Genero_Id),
+	CONSTRAINT fk_Pelicula1 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id),
+	CONSTRAINT fk_Genero FOREIGN KEY (Genero_Id) REFERENCES Genero (Genero_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Funcion (
+	Funcion_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Pelicula_Id INT NOT NULL,
+	Sala_Id INT NOT NULL,
+	Fecha DATE NOT NULL,
+	Hora_Inicio TIME NOT NULL,
+	Hora_Fin TIME NOT NULL,
+	Precio_Boleto Decimal (10,2) NOT NULL,
+	Asientos_Disponibles INT NOT NULL,
+	Estado ENUM ('HABILITADO', 'DESHABILITADO') NOT NULL DEFAULT 'HABILITADO',
+	CONSTRAINT fk_Pelicula2 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id),
+	CONSTRAINT fk_Sala1 FOREIGN KEY (Sala_Id) REFERENCES Sala (Sala_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Boleto (
+	Boleto_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Funcion_Id INT NOT NULL,
+	Usuario_Id INT NOT NULL,
+	Asiento_Fila INT NOT NULL,
+	Asiento_Columna INT NOT NULL,
+	Precio_Pagado DECIMAL (10,2) NOT NULL,
+	Fecha_Compra DATETIME NOT NULL,
+	Estado ENUM ('HABILITADO','DESHABILITADO') NOT NULL DEFAULT 'HABILITADO',
+	CONSTRAINT fk_Funcion1 FOREIGN KEY (Funcion_Id) REFERENCES Funcion (Funcion_Id),
+	CONSTRAINT fk_Usuario3 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Comentario_Sala (
+	Comentario_Sala_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Sala_Id INT NOT NULL,
+	Usuario_Id INT NOT NULL,
+	Comentario TEXT NOT NULL,
+	Calificacion DECIMAL (3,2) CHECK (Calificacion >= 0 AND Calificacion <= 5),
+	Fecha DATETIME NOT NULL,
+	CONSTRAINT fk_Sala2 FOREIGN KEY (Sala_Id) REFERENCES Sala (Sala_Id),
+	CONSTRAINT fk_Usuario4 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Comentario_Pelicula (
+	Comentario_Pelicula_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Pelicula_Id INT NOT NULL,
+	Usuario_Id INT NOT NULL,
+	Comentario TEXT NOT NULL,
+	Calificacion DECIMAL (3,2) CHECK (Calificacion >= 0 AND Calificacion <= 5),
+	Fecha DATETIME NOT NULL,
+	CONSTRAINT fk_Pelicula3 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id),
+	CONSTRAINT fk_Usuario5 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Tipo_Anuncio (
+	Tipo_Anuncio_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Nombre VARCHAR (200) NOT NULL,
+	Formato VARCHAR (100) NOT NULL,
+	Especificacion TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Precio_Anuncio (
+	Precio_Anuncio_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Tipo_Anuncio_Id INT NOT NULL,
+	Periodo VARCHAR (200) NOT NULL,
+	Precio DECIMAL (10,2) NOT NULL,
+	Fecha_Efectiva DATETIME NOT NULL,
+	CONSTRAINT fk_Tipo_Anuncio FOREIGN KEY (Tipo_Anuncio_Id) REFERENCES Tipo_Anuncio (Tipo_Anuncio_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Anuncio (
+	Anuncio_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Usuario_Id INT NOT NULL,
+	Tipo_Anuncio_Id INT NOT NULL,
+	Precio_Anuncio_Id INT NOT NULL,
+	Titulo VARCHAR (200) NOT NULL,
+	Contenido TEXT,
+	URL_Imagen VARCHAR (150),
+	URL_Video VARCHAR (150),
+	Fecha_Inicio DATE NOT NULL,
+	Fecha_Fin DATE NOT NULL,
+	Estado BOOL NOT NULL DEFAULT 1,
+	Fecha_Compra DATE NOT NULL,
+	CONSTRAINT fk_Usuario6 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id),
+	CONSTRAINT fk_Tipo_Anuncio2 FOREIGN KEY (Tipo_Anuncio_Id) REFERENCES Tipo_Anuncio (Tipo_Anuncio_Id),
+	CONSTRAINT fk_Precio_Anuncio FOREIGN KEY (Precio_Anuncio_Id) REFERENCES Precio_Anuncio (Precio_Anuncio_Id)
+);
+
+CREATE TABLE IF NOT EXISTS Costo_Bloqueo (
+	Costo_Bloqueo_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Periodo VARCHAR (100) NOT NULL,
+	Precio DECIMAL (10,2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Bloqueo_Anuncio (
+	Bloqueo_Anuncio_Id INT AUTO_INCREMENT PRIMARY KEY,
+	Costo_Bloqueo_Id INT NOT NULL,
+	Cine_Id INT NOT NULL,
+	Fecha_Inicio DATE NOT NULL,
+	Fecha_Fin DATE NOT NULL,
+	Estado ENUM ('HABILITADO', 'DESHABILITADO') DEFAULT 'HABILITADO',
+	CONSTRAINT fk_Costo_Bloqueo FOREIGN KEY (Costo_Bloqueo_Id) REFERENCES Costo_Bloqueo (Costo_Bloqueo_Id),
+	CONSTRAINT fk_Cine4 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id)
+);
+
