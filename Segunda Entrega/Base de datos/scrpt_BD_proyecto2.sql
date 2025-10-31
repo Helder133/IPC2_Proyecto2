@@ -208,4 +208,6 @@ CREATE TABLE IF NOT EXISTS Bloqueo_Anuncio (
 	CONSTRAINT fk_Costo_Bloqueo FOREIGN KEY (Costo_Bloqueo_Id) REFERENCES Costo_Bloqueo (Costo_Bloqueo_Id),
 	CONSTRAINT fk_Cine4 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id)
 );
-
+--Password: 1234
+INSERT INTO Usuario (Nombre, Email, Contraseña, Rol) VALUE ('Admin Sistema','adminSistema@gmail.com','MTIzNA==','Administrador Sistema');
+UPDATE Usuario SET Email = 'adminSistema@gmail.com'WHERE Usuario_Id = 1;
