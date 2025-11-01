@@ -14,6 +14,7 @@ public class UpdateUserRequest {
     private String Email;
     private String Contraseña;
     private String Rol;
+    private float Saldo;
 
     public int getUsuario_Id() {
         return Usuario_Id;
@@ -54,6 +55,13 @@ public class UpdateUserRequest {
     public void setRol(String Rol) {
         this.Rol = Rol;
     }
-    
+
+    public float getSaldo() {
+        return Saldo;
+    }
+
+    public void setSaldo(float Saldo) {
+        this.Saldo = Saldo;
+    }
     
 }

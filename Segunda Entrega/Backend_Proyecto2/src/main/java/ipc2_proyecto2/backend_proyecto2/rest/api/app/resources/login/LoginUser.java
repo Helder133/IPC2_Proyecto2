@@ -41,9 +41,15 @@ public class LoginUser {
             
             return Response.ok(new UsuarioResponse(usuariLogin)).build();
         } catch (SQLException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (UserDataInvalidException ex) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (UserDataInvalidException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
         }
         
     }

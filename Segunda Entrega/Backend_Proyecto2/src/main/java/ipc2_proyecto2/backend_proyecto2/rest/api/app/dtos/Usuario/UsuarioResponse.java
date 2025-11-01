@@ -15,12 +15,14 @@ public class UsuarioResponse {
     private String Nombre;
     private String Email;
     private String Rol;
+    private float Saldo;
 
     public UsuarioResponse(Usuario usuario) {
         this.Usuario_Id = usuario.getUsuario_Id();
         this.Nombre = usuario.getNombre();
         this.Email = usuario.getEmail();
         this.Rol = usuario.getRol();
+        this.Saldo = usuario.getSaldo();
     }
     
     public int getUsuario_Id() {
@@ -53,6 +55,14 @@ public class UsuarioResponse {
 
     public void setRol(String Rol) {
         this.Rol = Rol;
+    }
+
+    public float getSaldo() {
+        return Saldo;
+    }
+
+    public void setSaldo(float Saldo) {
+        this.Saldo = Saldo;
     }
     
     

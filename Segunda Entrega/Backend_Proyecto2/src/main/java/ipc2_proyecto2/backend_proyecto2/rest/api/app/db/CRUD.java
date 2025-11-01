@@ -6,6 +6,7 @@ package ipc2_proyecto2.backend_proyecto2.rest.api.app.db;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -17,6 +18,6 @@ public interface CRUD <T>{
     void update(T t) throws SQLException;
     void delete(T t) throws SQLException;
     List<T> select() throws SQLException;
-    T selectById(int id) throws SQLException;
+    Optional<T> selectById(int id) throws SQLException;
     List<T> selectByString(String code) throws SQLException;
 }

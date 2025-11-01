@@ -18,6 +18,7 @@ public class Usuario {
     private String Email;
     private String Contraseña;
     private String Rol;
+    private float Saldo;
 
     public Usuario(String Nombre, String Email, String Contraseña, String Rol) {
         this.Nombre = Nombre;
@@ -66,8 +67,16 @@ public class Usuario {
     public void setRol(String Rol) {
         this.Rol = Rol;
     }
+
+    public float getSaldo() {
+        return Saldo;
+    }
+
+    public void setSaldo(float Saldo) {
+        this.Saldo = Saldo;
+    }
     
-    public boolean idValid() {
+    public boolean isValid() {
         return StringUtils.isBlank(Nombre) &&
                 StringUtils.isBlank(Email) &&
                 StringUtils.isBlank(Contraseña) &&

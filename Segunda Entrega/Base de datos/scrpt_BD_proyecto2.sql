@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Cartera_Digital (
 	Cartera_Digital_Id INT AUTO_INCREMENT PRIMARY KEY,
 	Usuario_Id INT NOT NULL,
 	Saldo DECIMAL (10,2) NOT NULL,
-	CONSTRAINT fk_Usuario1 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) 
+	CONSTRAINT fk_Usuario1 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Historial (
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Historial (
 	Fecha DATE NOT NULL,
 	Transaccion ENUM ('PAGO', 'DEPOSITO') NOT NULL,
 	Descripcion VARCHAR (150) NOT NULL,
-	CONSTRAINT fk_Cartera_Digital FOREIGN KEY (Cartera_Digital_Id) REFERENCES Cartera_Digital (Cartera_Digital_Id)
+	CONSTRAINT fk_Cartera_Digital FOREIGN KEY (Cartera_Digital_Id) REFERENCES Cartera_Digital (Cartera_Digital_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Cine (
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS Sala (
 	Columna INT NOT NULL,
 	Estado BOOL NOT NULL DEFAULT 1,
 	Comentario_Estado BOOL NOT NULL DEFAULT 1,
-	CONSTRAINT fk_Cine1 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id),
-	CONSTRAINT fk_Tipo_Sala FOREIGN KEY (Tipo_Sala_Id) REFERENCES Tipo_Sala (Tipo_Sala_Id)
+	CONSTRAINT fk_Cine1 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Tipo_Sala FOREIGN KEY (Tipo_Sala_Id) REFERENCES Tipo_Sala (Tipo_Sala_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Costo_Cine (
@@ -63,15 +63,15 @@ CREATE TABLE IF NOT EXISTS Costo_Cine (
 	Cine_Id INT NOT NULL,
 	Costo_Diario INT NOT NULL DEFAULT 150,
 	Fecha_Efectiva DATE NOT NULL,
-	CONSTRAINT fk_Cine2 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id)
+	CONSTRAINT fk_Cine2 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Admin_Cine (
 	Usuario_Id INT NOT NULL,
 	Cine_Id INT NOT NULL,
 	CONSTRAINT pk_Admin_Cine PRIMARY KEY (Usuario_Id, Cine_Id),
-	CONSTRAINT fk_Usuario2 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id),
-	CONSTRAINT fk_Cine3 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id)
+	CONSTRAINT fk_Usuario2 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Cine3 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Clasificacion (
@@ -98,15 +98,15 @@ CREATE TABLE IF NOT EXISTS Pelicula (
 	Poster VARCHAR (200) NOT NULL,
 	Calificacion INT NOT NULL,
 	Estado_Comentario BOOL NOT NULL DEFAULT 1,
-	CONSTRAINT fk_Clasificacion FOREIGN KEY (Clasificacion_Id) REFERENCES Clasificacion (Clasificacion_Id)
+	CONSTRAINT fk_Clasificacion FOREIGN KEY (Clasificacion_Id) REFERENCES Clasificacion (Clasificacion_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Poseer_Genero (
 	Pelicula_Id INT NOT NULL,
 	Genero_Id INT NOT NULL,
 	CONSTRAINT pk_Generos PRIMARY KEY (Pelicula_Id, Genero_Id),
-	CONSTRAINT fk_Pelicula1 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id),
-	CONSTRAINT fk_Genero FOREIGN KEY (Genero_Id) REFERENCES Genero (Genero_Id)
+	CONSTRAINT fk_Pelicula1 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Genero FOREIGN KEY (Genero_Id) REFERENCES Genero (Genero_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Funcion (
@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS Funcion (
 	Precio_Boleto Decimal (10,2) NOT NULL,
 	Asientos_Disponibles INT NOT NULL,
 	Estado ENUM ('HABILITADO', 'DESHABILITADO') NOT NULL DEFAULT 'HABILITADO',
-	CONSTRAINT fk_Pelicula2 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id),
-	CONSTRAINT fk_Sala1 FOREIGN KEY (Sala_Id) REFERENCES Sala (Sala_Id)
+	CONSTRAINT fk_Pelicula2 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Sala1 FOREIGN KEY (Sala_Id) REFERENCES Sala (Sala_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Boleto (
@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS Boleto (
 	Precio_Pagado DECIMAL (10,2) NOT NULL,
 	Fecha_Compra DATETIME NOT NULL,
 	Estado ENUM ('HABILITADO','DESHABILITADO') NOT NULL DEFAULT 'HABILITADO',
-	CONSTRAINT fk_Funcion1 FOREIGN KEY (Funcion_Id) REFERENCES Funcion (Funcion_Id),
-	CONSTRAINT fk_Usuario3 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id)
+	CONSTRAINT fk_Funcion1 FOREIGN KEY (Funcion_Id) REFERENCES Funcion (Funcion_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Usuario3 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Comentario_Sala (
@@ -143,8 +143,8 @@ CREATE TABLE IF NOT EXISTS Comentario_Sala (
 	Comentario TEXT NOT NULL,
 	Calificacion DECIMAL (3,2) CHECK (Calificacion >= 0 AND Calificacion <= 5),
 	Fecha DATETIME NOT NULL,
-	CONSTRAINT fk_Sala2 FOREIGN KEY (Sala_Id) REFERENCES Sala (Sala_Id),
-	CONSTRAINT fk_Usuario4 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id)
+	CONSTRAINT fk_Sala2 FOREIGN KEY (Sala_Id) REFERENCES Sala (Sala_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Usuario4 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Comentario_Pelicula (
@@ -154,8 +154,8 @@ CREATE TABLE IF NOT EXISTS Comentario_Pelicula (
 	Comentario TEXT NOT NULL,
 	Calificacion DECIMAL (3,2) CHECK (Calificacion >= 0 AND Calificacion <= 5),
 	Fecha DATETIME NOT NULL,
-	CONSTRAINT fk_Pelicula3 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id),
-	CONSTRAINT fk_Usuario5 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id)
+	CONSTRAINT fk_Pelicula3 FOREIGN KEY (Pelicula_Id) REFERENCES Pelicula (Pelicula_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Usuario5 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Tipo_Anuncio (
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS Precio_Anuncio (
 	Periodo VARCHAR (200) NOT NULL,
 	Precio DECIMAL (10,2) NOT NULL,
 	Fecha_Efectiva DATETIME NOT NULL,
-	CONSTRAINT fk_Tipo_Anuncio FOREIGN KEY (Tipo_Anuncio_Id) REFERENCES Tipo_Anuncio (Tipo_Anuncio_Id)
+	CONSTRAINT fk_Tipo_Anuncio FOREIGN KEY (Tipo_Anuncio_Id) REFERENCES Tipo_Anuncio (Tipo_Anuncio_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Anuncio (
@@ -187,9 +187,9 @@ CREATE TABLE IF NOT EXISTS Anuncio (
 	Fecha_Fin DATE NOT NULL,
 	Estado BOOL NOT NULL DEFAULT 1,
 	Fecha_Compra DATE NOT NULL,
-	CONSTRAINT fk_Usuario6 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id),
-	CONSTRAINT fk_Tipo_Anuncio2 FOREIGN KEY (Tipo_Anuncio_Id) REFERENCES Tipo_Anuncio (Tipo_Anuncio_Id),
-	CONSTRAINT fk_Precio_Anuncio FOREIGN KEY (Precio_Anuncio_Id) REFERENCES Precio_Anuncio (Precio_Anuncio_Id)
+	CONSTRAINT fk_Usuario6 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Tipo_Anuncio2 FOREIGN KEY (Tipo_Anuncio_Id) REFERENCES Tipo_Anuncio (Tipo_Anuncio_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Precio_Anuncio FOREIGN KEY (Precio_Anuncio_Id) REFERENCES Precio_Anuncio (Precio_Anuncio_Id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Costo_Bloqueo (
@@ -205,9 +205,9 @@ CREATE TABLE IF NOT EXISTS Bloqueo_Anuncio (
 	Fecha_Inicio DATE NOT NULL,
 	Fecha_Fin DATE NOT NULL,
 	Estado ENUM ('HABILITADO', 'DESHABILITADO') DEFAULT 'HABILITADO',
-	CONSTRAINT fk_Costo_Bloqueo FOREIGN KEY (Costo_Bloqueo_Id) REFERENCES Costo_Bloqueo (Costo_Bloqueo_Id),
-	CONSTRAINT fk_Cine4 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id)
+	CONSTRAINT fk_Costo_Bloqueo FOREIGN KEY (Costo_Bloqueo_Id) REFERENCES Costo_Bloqueo (Costo_Bloqueo_Id) ON DELETE CASCADE,
+	CONSTRAINT fk_Cine4 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id) ON DELETE CASCADE
 );
 --Password: 1234
-INSERT INTO Usuario (Nombre, Email, Contraseña, Rol) VALUE ('Admin Sistema','adminSistema@gmail.com','MTIzNA==','Administrador Sistema');
-UPDATE Usuario SET Email = 'adminSistema@gmail.com'WHERE Usuario_Id = 1;
+--INSERT INTO Usuario (Nombre, Email, Contraseña, Rol) VALUE ('Admin Sistema','adminSistema@gmail.com','MTIzNA==','Administrador Sistema');
+--UPDATE Usuario SET Email = 'adminSistema@gmail.com'WHERE Usuario_Id = 1;
