@@ -4,6 +4,7 @@
  */
 package ipc2_proyecto2.backend_proyecto2.rest.api.app.db;
 
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.EntityAlreadyExistsException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Cartera_Digital;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Login;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -26,6 +28,12 @@ public class UserDB implements CRUD<Usuario> {
     private static final String CREAR_USUARIO_QURY = "INSERT INTO Usuario (Nombre, Email, Contraseña, Rol) VALUE (?,?,?,?);";
     private static final String BUSCAR_POR_EMAIL = "SELECT * FROM Usuario WHERE Email = ?";
     private static final String TODOS_LOS_USUARIOS = "SELECT * FROM Usuario";
+    private static final String USUARIO_POR_INT = "SELECT * FROM Usuario WHERE Usuario_Id = ?";
+    private static final String USUARIOS_BUSCADOS_POR_NOMBRE = "SELECT * FROM Usuario WHERE Nombre LIKE ?";
+    private static final String VERIFICAR_NUEVO_EMAIL = "SELECT * FROM Usuario WHERE Email = ? AND Usuario_Id <> ?";
+    private static final String ACTUALIZAR_USUARIO_SIN_PASSWORD = "UPDATE Usuario SET Nombre = ?, Email = ?, Rol = ? WHERE Usuario_Id = ?";
+    private static final String ACTUALIZAR_USUARIO_CON_PASSWORD = "UPDATE Usuario SET Nombre = ?, Email = ?, Contraseña = ?,Rol = ? WHERE Usuario_Id = ?";
+    private static final String ELIMINAR_USUARIO = "DELETE FROM Usuario WHERE Usuario_Id = ?";
     
     public Optional<Usuario> loginUser(Login login) throws SQLException, UserDataInvalidException {
         Connection connection = DBConnectionSingleton.getInstance().getConnection();
@@ -41,17 +49,17 @@ public class UserDB implements CRUD<Usuario> {
                         resultSet.getString("Rol")
                 );
                 usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
-                
+
                 Cartera_DigitalDB cartera_DigitalDB = new Cartera_DigitalDB();
                 Optional<Cartera_Digital> cartera_DigitalOpt = cartera_DigitalDB.selectById(usuario.getUsuario_Id());
-                
+
                 if (cartera_DigitalOpt.isEmpty()) {
                     throw new UserDataInvalidException(
-                    String.format("No se logro encontrar la cartera digital del usuario con correo: %s", usuario.getEmail()));
+                            String.format("No se logro encontrar la cartera digital del usuario con correo: %s", usuario.getEmail()));
                 }
-                
+
                 usuario.setSaldo(cartera_DigitalOpt.get().getSaldo());
-                
+
                 return Optional.of(usuario);
             }
         }
@@ -84,13 +92,41 @@ public class UserDB implements CRUD<Usuario> {
     }
 
     @Override
-    public void update(Usuario t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void update(Usuario t) throws SQLException, EntityAlreadyExistsException {
+        Connection connection = DBConnectionSingleton.getInstance().getConnection();
+        
+        if (verificarEmail(t)) {
+            throw new EntityAlreadyExistsException(String.format("El email %s ya esta relacionado con otro usuario", t.getEmail()));
+        }
+        
+        if (StringUtils.isBlank(t.getContraseña())) {
+            try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_SIN_PASSWORD)){
+                insert.setString(1, t.getNombre());
+                insert.setString(2, t.getEmail());
+                insert.setString(3, t.getRol());
+                insert.setInt(4, t.getUsuario_Id());
+                insert.executeUpdate();
+            }
+        } else {
+            try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_CON_PASSWORD)){
+                insert.setString(1, t.getNombre());
+                insert.setString(2, t.getEmail());
+                insert.setString(3, t.getContraseña());
+                insert.setString(4, t.getRol());
+                insert.setInt(5, t.getUsuario_Id());
+                insert.executeUpdate();
+            }
+        }
     }
 
     @Override
     public void delete(Usuario t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connection = DBConnectionSingleton.getInstance().getConnection();
+        try(PreparedStatement deleteStatement = connection.prepareStatement(ELIMINAR_USUARIO)) {
+            
+            deleteStatement.setInt(1, t.getUsuario_Id());
+            deleteStatement.executeUpdate();
+        }
     }
 
     @Override
@@ -108,21 +144,79 @@ public class UserDB implements CRUD<Usuario> {
                         resultSet.getString("Rol")
                 );
                 usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
+                usuario.setContraseña("");
                 usuarios.add(usuario);
             }
         }
         return usuarios;
-    
+
     }
 
     @Override
-    public Optional<Usuario> selectById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Optional<Usuario> selectById(int id) throws SQLException, UserDataInvalidException {
+        Connection connection = DBConnectionSingleton.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(USUARIO_POR_INT)) {
+            query.setInt(1, id);
+            ResultSet resultSet = query.executeQuery();
+            if (resultSet.next()) {
+                Usuario usuario = new Usuario(
+                        resultSet.getString("Nombre"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("Contraseña"),
+                        resultSet.getString("Rol")
+                );
+                usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
+                usuario.setContraseña("");
+
+                Cartera_DigitalDB cartera_DigitalDB = new Cartera_DigitalDB();
+                Optional<Cartera_Digital> cartera_DigitalOpt = cartera_DigitalDB.selectById(usuario.getUsuario_Id());
+                if (cartera_DigitalOpt.isEmpty()) {
+                    throw new UserDataInvalidException(
+                            String.format("No se logro encontrar la cartera digital del usuario con correo: %s", usuario.getEmail()));
+                }
+
+                usuario.setSaldo(cartera_DigitalOpt.get().getSaldo());
+
+                return Optional.of(usuario);
+            }
+        }
+        return Optional.empty();
     }
 
     @Override
-    public List<Usuario> selectByString(String code) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Usuario> selectByString(String code) throws SQLException, UserDataInvalidException {
+        List<Usuario> usuarios = new ArrayList<>();
+        Connection connection = DBConnectionSingleton.getInstance().getConnection();
+        try (PreparedStatement query = connection.prepareStatement(USUARIOS_BUSCADOS_POR_NOMBRE)) {
+            query.setString(1, "%" + code + "%");
+
+            ResultSet resultSet = query.executeQuery();
+
+            while (resultSet.next()) {
+                Usuario usuario = new Usuario(
+                        resultSet.getString("Nombre"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("Contraseña"),
+                        resultSet.getString("Rol")
+                );
+
+                usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
+                usuario.setContraseña("");
+
+                Cartera_DigitalDB cartera_DigitalDB = new Cartera_DigitalDB();
+                Optional<Cartera_Digital> cartera_DigitalOpt = cartera_DigitalDB.selectById(usuario.getUsuario_Id());
+                if (cartera_DigitalOpt.isEmpty()) {
+                    throw new UserDataInvalidException(
+                            String.format("No se logro encontrar la cartera digital del usuario con correo: %s", usuario.getEmail()));
+                }
+
+                usuario.setSaldo(cartera_DigitalOpt.get().getSaldo());
+
+                usuarios.add(usuario);
+            }
+        }
+
+        return usuarios;
     }
 
     public boolean existsEmail(String email) throws SQLException {
@@ -133,5 +227,15 @@ public class UserDB implements CRUD<Usuario> {
             return result.next();
         }
     }
-
+    
+    private boolean verificarEmail(Usuario usuario) throws SQLException{
+        Connection connection = DBConnectionSingleton.getInstance().getConnection();
+        try (PreparedStatement select = connection.prepareStatement(VERIFICAR_NUEVO_EMAIL)) {
+            select.setString(1, usuario.getEmail());
+            select.setInt(2, usuario.getUsuario_Id());
+            ResultSet result = select.executeQuery();
+            return result.next();
+        }
+    }
+    
 }

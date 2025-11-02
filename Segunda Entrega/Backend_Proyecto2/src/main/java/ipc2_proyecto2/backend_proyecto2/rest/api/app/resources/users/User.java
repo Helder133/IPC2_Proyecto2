@@ -5,6 +5,7 @@
 package ipc2_proyecto2.backend_proyecto2.rest.api.app.resources.users;
 
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario.NewUserRequest;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario.UpdateUserRequest;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario.UsuarioResponse;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.EntityAlreadyExistsException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidException;
@@ -13,11 +14,13 @@ import ipc2_proyecto2.backend_proyecto2.rest.api.app.services.users.UsuarioServi
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.sql.SQLException;
@@ -81,9 +84,107 @@ public class User {
 
     }
 
-    /*
+    @GET
+    @Path("{code}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserByInt(@PathParam("code") String code) {
+        UsuarioService usuarioService = new UsuarioService();
+        try {
+            int code1 = Integer.parseInt(code);
+
+            Usuario existingUser = usuarioService.getUsuarioByInt(code1);
+            return Response.ok(new UsuarioResponse(existingUser)).build();
+        } catch (NumberFormatException e) {
+
+            return getUserString(code);
+
+        } catch (SQLException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (UserDataInvalidException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+    }
+
     @PUT
+    @Path("{code}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putXml(String content) {
-    }*/
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(@PathParam("code") int code,
+            UpdateUserRequest usuarioRequest) {
+        UsuarioService usuarioService = new UsuarioService();
+        
+        try {
+            Usuario userUpdate = usuarioService.updateUsuario(code, usuarioRequest);
+            return Response.ok(new UsuarioResponse(userUpdate)).build();
+        } catch (UserDataInvalidException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (EntityAlreadyExistsException e) {
+            return Response.status(Response.Status.CONFLICT)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+    }
+    
+    @DELETE
+    @Path("{code}")
+    public Response deleteUser(@PathParam("code") int code){
+        UsuarioService usuarioService = new UsuarioService();
+        try {
+            usuarioService.deleteUserByCode(code);
+            
+            return Response.ok().build();
+        } catch (UserDataInvalidException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (EntityAlreadyExistsException e) {
+            return Response.status(Response.Status.CONFLICT)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\": \"" + e.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+    }
+    
+    private Response getUserString(String code) {
+        List<UsuarioResponse> users;
+        UsuarioService usuarioService = new UsuarioService();
+        try {
+            users = usuarioService.getUserByString(code)
+                    .stream()
+                    .map(UsuarioResponse::new)
+                    .toList();
+            return Response.ok(users).build();
+        } catch (SQLException ex) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\": \"" + ex.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        } catch (UserDataInvalidException ex) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\": \"" + ex.getMessage() + "\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+    }
 }
