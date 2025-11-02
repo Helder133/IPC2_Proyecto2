@@ -1,0 +1,19 @@
+@if(alreadyLoggedIn) {
+<div class="alert alert-success d-flex align-items-center">
+    <i class="bi bi-check-circle flex-shrink-0 me-2"></i>
+    <div>
+        Loggeado como {{currentRole}}.
+    </div>
+</div>
+} @else {
+  <div class="alert alert-danger d-flex align-items-center">
+    <i class="bi bi-cross-circle flex-shrink-0 me-2"></i>
+    <div>
+        No loggeado.
+    </div>
+</div>
+}
+<h1>Login</h1>
+<button type="button" class="btn btn-primary" (click)="login('ADMIN')">Login como Admin</button>
+<button type="button" class="btn btn-success" (click)="login('USUARIO')">Login como usuario normal</button>
+<button type="button" class="btn btn-danger" (click)="logout()">Logout</button>
