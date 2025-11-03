@@ -1,9 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { RestConstants } from "../../shared/restapi/rest-constants";
-import { Login } from "../../models/login/login";
+import { RequestLogin } from "../../models/login/requestlogin";
 import { Observable } from 'rxjs';
-import { RequestLogin } from "../../models/login/requestLogin";
+import { ResponseLogin } from "../../models/login/responseLogin";
+import { UsuarioResponse } from "../../models/usuario/usuarioResponse";
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class loginService {
 
     constructor(private httpClient: HttpClient) { }
 
-    public loginUser(newLogin: Login): Observable<RequestLogin> {
-        return this.httpClient.post<RequestLogin>(`${this.restConstants.getApiURL()}login`, newLogin);
+    public loginUser(formLogin: RequestLogin): Observable<UsuarioResponse> {
+        return this.httpClient.post<UsuarioResponse>(`${this.restConstants.getApiURL()}login`, formLogin);
     }
 }

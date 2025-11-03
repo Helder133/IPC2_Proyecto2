@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Login } from '../../models/login/login';
+import { RequestLogin } from '../../models/login/requestlogin';
 import { NgIf } from '@angular/common';
 import { loginService } from '../../services/login/login.service';
-import { RequestLogin } from '../../models/login/requestLogin';
+import { ResponseLogin } from '../../models/login/responseLogin';
+import { UsuarioResponse } from '../../models/usuario/usuarioResponse';
 
 @Component({
     selector: 'app-login-page',
@@ -13,9 +14,9 @@ import { RequestLogin } from '../../models/login/requestLogin';
 
 export class LoginPageComponent implements OnInit {
 
-    protected requestLogin!: RequestLogin;
+    protected requestLogin!: ResponseLogin;
     loginFormGroup!: FormGroup;
-    newLogin!: Login;
+    fromLogin!: RequestLogin;
     operationDone: boolean = false;
     mensajeError: string = '';
 
@@ -50,22 +51,17 @@ export class LoginPageComponent implements OnInit {
     }
 
     private saveNewLogin(): void {
-        this.newLogin = this.loginFormGroup.value as Login;
-        this.loginService.loginUser(this.newLogin).subscribe({
-            next: (usuarioLogin: RequestLogin) => {
-                this.requestLogin = usuarioLogin;
+        this.fromLogin = this.loginFormGroup.value;
+        this.loginService.loginUser(this.fromLogin).subscribe({
+            next: (usuarioResponse: UsuarioResponse) => {
+                this.requestLogin = usuarioResponse;
                 console.log(this.requestLogin);
-
-
-                const rolUsuario = JSON.stringify(usuarioLogin.Rol);
-                localStorage.setItem('role', rolUsuario);
-                console.log(rolUsuario);
-                /*
-                const userRole = usuarioLogin.Rol;
+                
+                const userRole = usuarioResponse.Rol;
                 console.log('Rol del usuario: ' + userRole);
                 localStorage.setItem('role', userRole);
                 console.log(localStorage.getItem('role'));
-                */
+                
             },
             error: (error: any) => {
                 this.operationDone = true;
