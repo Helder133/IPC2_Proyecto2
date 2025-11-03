@@ -35,6 +35,7 @@ public class LoginUser {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response userLogin (UserLogin login){
         try {
+            System.out.println("Comunicacion con el frontend exitodo :3");
             LoginService loginService = new LoginService();
             
             Usuario usuariLogin= loginService.loginUser(login);
