@@ -1,12 +1,11 @@
 <body class="bg-dark text-light">
     <div class="d-flex justify-content-center align-items-center min-vh-100">
         <main class="w-100" style="max-width: 400px;">
-            @if(operationDone) {
+            @if(exception) {
             <div class="alert alert-danger d-flex align-items-center">
                 <i class="bi bi-exclamation-triangle"></i>
                 <div>
-                    error:
-                    {{mensajeError}}.
+                    Error: {{mensajeError}}.
                 </div>
             </div>
             }
@@ -48,6 +47,9 @@
                     <div class="d-grid">
                         <button class="btn btn-primary" type="submit" [disabled]="loginFormGroup.invalid">Iniciar
                             Sesión</button>
+                            <p><a routerLink="/user/new" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> 
+                                <i class="bi bi-person-plus-fill"> </i>
+                                No tienes cuenta? Registrate</a></p>
                     </div>
                 </form>
             </div>
