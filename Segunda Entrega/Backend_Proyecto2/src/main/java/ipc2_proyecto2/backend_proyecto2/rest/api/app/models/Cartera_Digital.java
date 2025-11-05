@@ -9,37 +9,37 @@ package ipc2_proyecto2.backend_proyecto2.rest.api.app.models;
  * @author helder
  */
 public class Cartera_Digital {
-    private int Cartera_Digital_Id;
-    private int Usuario_Id;
-    private float Saldo;
+    private int cartera_Digital_Id;
+    private int usuario_Id;
+    private float saldo;
 
     public Cartera_Digital(int Usuario_Id, float Saldo) {
-        this.Usuario_Id = Usuario_Id;
-        this.Saldo = Saldo;
+        this.usuario_Id = Usuario_Id;
+        this.saldo = Saldo;
     }
 
     public int getCartera_Digital_Id() {
-        return Cartera_Digital_Id;
+        return cartera_Digital_Id;
     }
 
-    public void setCartera_Digital_Id(int Cartera_Digital_Id) {
-        this.Cartera_Digital_Id = Cartera_Digital_Id;
+    public void setCartera_Digital_Id(int cartera_Digital_Id) {
+        this.cartera_Digital_Id = cartera_Digital_Id;
     }
 
     public int getUsuario_Id() {
-        return Usuario_Id;
+        return usuario_Id;
     }
 
-    public void setUsuario_Id(int Usuario_Id) {
-        this.Usuario_Id = Usuario_Id;
+    public void setUsuario_Id(int usuario_Id) {
+        this.usuario_Id = usuario_Id;
     }
 
     public float getSaldo() {
-        return Saldo;
+        return saldo;
     }
 
-    public void setSaldo(float Saldo) {
-        this.Saldo = Saldo;
+    public void setSaldo(float saldo) {
+        this.saldo = saldo;
     }
     
     
