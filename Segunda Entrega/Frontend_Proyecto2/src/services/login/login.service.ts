@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { RestConstants } from "../../shared/restapi/rest-constants";
 import { RequestLogin } from "../../models/login/requestlogin";
 import { Observable } from 'rxjs';
-import { ResponseLogin } from "../../models/login/responseLogin";
 import { UsuarioResponse } from "../../models/usuario/usuarioResponse";
 
 @Injectable({

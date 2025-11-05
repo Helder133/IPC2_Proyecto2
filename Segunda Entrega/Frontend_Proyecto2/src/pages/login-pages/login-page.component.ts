@@ -3,21 +3,20 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { RequestLogin } from '../../models/login/requestlogin';
 import { NgIf } from '@angular/common';
 import { loginService } from '../../services/login/login.service';
-import { ResponseLogin } from '../../models/login/responseLogin';
 import { UsuarioResponse } from '../../models/usuario/usuarioResponse';
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-login-page',
-    imports: [FormsModule, ReactiveFormsModule, NgIf],
+    imports: [FormsModule, ReactiveFormsModule, NgIf, RouterLink],
     templateUrl: './login-page.component.html'
 })
 
 export class LoginPageComponent implements OnInit {
-
-    protected requestLogin!: ResponseLogin;
+    protected responseUsuario!: UsuarioResponse;
     loginFormGroup!: FormGroup;
     fromLogin!: RequestLogin;
-    operationDone: boolean = false;
+    exception: boolean = false;
     mensajeError: string = '';
 
     constructor(private formBuilder: FormBuilder, private loginService: loginService) {
@@ -30,22 +29,8 @@ export class LoginPageComponent implements OnInit {
         });
     }
 
-    /*login(role: string): void {
-        localStorage.setItem('role', role);
-        switch (role) {
-            case 'ADMINISTRADOR SISTEMA':
-                this.router.navigate(['/users']);
-                break;
-            case 'ADMINISTRADOR CINE':
-                this.router.navigate(['/users']);
-                break; 
-            case 'USUARIO':
-                this.router.navigate(['/users']);
-        }
-    }*/
-
     submit(): void {
-        this.operationDone = false;
+        this.exception = false;
         console.log('se hizo submit');
         this.saveNewLogin();
     }
@@ -54,18 +39,12 @@ export class LoginPageComponent implements OnInit {
         this.fromLogin = this.loginFormGroup.value;
         this.loginService.loginUser(this.fromLogin).subscribe({
             next: (usuarioResponse: UsuarioResponse) => {
-                this.requestLogin = usuarioResponse;
-                console.log(this.requestLogin);
-                
-                const userRole = usuarioResponse.Rol;
-                console.log('Rol del usuario: ' + userRole);
-                localStorage.setItem('role', userRole);
-                console.log(localStorage.getItem('role'));
-                
+                this.responseUsuario = usuarioResponse;
+                localStorage.setItem('rol', this.responseUsuario.rol);
+                localStorage.setItem('usuario_Id', JSON.stringify(this.responseUsuario.usuario_Id));
             },
             error: (error: any) => {
-                this.operationDone = true;
-
+                this.exception = true;
                 // Si el backend envía un JSON con el campo "error"
                 if (error.error && error.error.error) {
                     this.mensajeError = error.error.error;
