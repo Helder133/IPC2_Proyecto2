@@ -5,6 +5,7 @@
 package ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario;
 
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Usuario;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.UsuarioTypeEnum;
 
 /**
  *
@@ -14,17 +15,15 @@ public class UsuarioResponse {
     private int usuario_Id;
     private String nombre;
     private String email;
-    private String rol;
-    private float saldo;
+    private UsuarioTypeEnum usuarioTypeEnum;
 
     public UsuarioResponse(Usuario usuario) {
         this.usuario_Id = usuario.getUsuario_Id();
         this.nombre = usuario.getNombre();
         this.email = usuario.getEmail();
-        this.rol = usuario.getRol();
-        this.saldo = usuario.getSaldo();
+        this.usuarioTypeEnum = usuario.getUsuarioTypeEnum();
     }
-    
+
     public int getUsuario_Id() {
         return usuario_Id;
     }
@@ -49,21 +48,12 @@ public class UsuarioResponse {
         this.email = email;
     }
 
-    public String getRol() {
-        return rol;
+    public UsuarioTypeEnum getUsuarioTypeEnum() {
+        return usuarioTypeEnum;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setUsuarioTypeEnum(UsuarioTypeEnum usuarioTypeEnum) {
+        this.usuarioTypeEnum = usuarioTypeEnum;
     }
 
-    public float getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(float saldo) {
-        this.saldo = saldo;
-    }
-    
-    
 }

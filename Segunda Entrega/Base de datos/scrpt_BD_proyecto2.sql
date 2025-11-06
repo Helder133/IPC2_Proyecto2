@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS Proyecto2;
 
-USE Proyecto2:
+USE Proyecto2;
 
 CREATE USER 'Proyecto2'@'localhost' IDENTIFIED BY 'Proyecto22025*';
 
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
 	Nombre VARCHAR(200) NOT NULL,
 	Email VARCHAR (100) UNIQUE NOT NULL,
 	Contraseña VARCHAR (50) NOT NULL,
-	Rol ENUM('Usuario','Administrador Sistema','Administrador Cine') NOT NULL DEFAULT 'Usuario'
+	Rol ENUM('Usuario','Administrador_Sistema','Administrador_Cine') NOT NULL DEFAULT 'Usuario'
 );
 
 CREATE TABLE IF NOT EXISTS Cartera_Digital (
@@ -209,5 +209,5 @@ CREATE TABLE IF NOT EXISTS Bloqueo_Anuncio (
 	CONSTRAINT fk_Cine4 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id) ON DELETE CASCADE
 );
 --Password: 1234
---INSERT INTO Usuario (Nombre, Email, Contraseña, Rol) VALUE ('Admin Sistema','adminSistema@gmail.com','MTIzNA==','Administrador Sistema');
+--INSERT INTO Usuario (Nombre, Email, Contraseña, Rol) VALUE ('Prueba1','1@gmail.com','MTIzNA==','Administrador_Sistema');
 --UPDATE Usuario SET Email = 'adminSistema@gmail.com'WHERE Usuario_Id = 1;

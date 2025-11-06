@@ -17,14 +17,13 @@ public class Usuario {
     private String nombre;
     private String email;
     private String contraseña;
-    private String rol;
-    private float saldo;
+    private UsuarioTypeEnum usuarioTypeEnum;
 
-    public Usuario(String Nombre, String Email, String Contraseña, String Rol) {
+    public Usuario(String Nombre, String Email, String Contraseña, UsuarioTypeEnum usuarioTypeEnum) {
         this.nombre = Nombre;
         this.email = Email;
         this.contraseña = incriptar(Contraseña);
-        this.rol = Rol;
+        this.usuarioTypeEnum = usuarioTypeEnum;
         this.usuario_Id = 1;
     }
 
@@ -60,27 +59,19 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public String getRol() {
-        return rol;
+    public UsuarioTypeEnum getUsuarioTypeEnum() {
+        return usuarioTypeEnum;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setUsuarioTypeEnum(UsuarioTypeEnum usuarioTypeEnum) {
+        this.usuarioTypeEnum = usuarioTypeEnum;
     }
 
-    public float getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(float saldo) {
-        this.saldo = saldo;
-    }
-    
     public boolean isValid() {
         return StringUtils.isBlank(nombre) &&
                 StringUtils.isBlank(email) &&
                 StringUtils.isBlank(contraseña) &&
-                StringUtils.isBlank(rol) &&
+                usuarioTypeEnum == null &&
                 usuario_Id > 0;
                 
     }

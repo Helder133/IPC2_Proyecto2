@@ -4,6 +4,8 @@
  */
 package ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario;
 
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.UsuarioTypeEnum;
+
 /**
  *
  * @author helder
@@ -13,7 +15,15 @@ public class NewUserRequest {
     private String nombre;
     private String email;
     private String contraseña;
-    private String rol;
+    private UsuarioTypeEnum usuarioTypeEnum;
+
+    public int getUsuario_Id() {
+        return usuario_Id;
+    }
+
+    public void setUsuario_Id(int usuario_Id) {
+        this.usuario_Id = usuario_Id;
+    }
 
     public String getNombre() {
         return nombre;
@@ -39,21 +49,11 @@ public class NewUserRequest {
         this.contraseña = contraseña;
     }
 
-    public String getRol() {
-        return rol;
+    public UsuarioTypeEnum getUsuarioTypeEnum() {
+        return usuarioTypeEnum;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setUsuarioTypeEnum(UsuarioTypeEnum usuarioTypeEnum) {
+        this.usuarioTypeEnum = usuarioTypeEnum;
     }
-
-    public int getUsuario_Id() {
-        return usuario_Id;
-    }
-
-    public void setUsuario_Id(int usuario_Id) {
-        this.usuario_Id = usuario_Id;
-    }
-    
-    
 }

@@ -9,6 +9,7 @@ import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidE
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Cartera_Digital;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Login;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Usuario;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.UsuarioTypeEnum;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,7 +36,7 @@ public class UserDB implements CRUD<Usuario> {
     private static final String ACTUALIZAR_USUARIO_CON_PASSWORD = "UPDATE Usuario SET Nombre = ?, Email = ?, Contraseña = ?,Rol = ? WHERE Usuario_Id = ?";
     private static final String ELIMINAR_USUARIO = "DELETE FROM Usuario WHERE Usuario_Id = ?";
     
-    public Optional<Usuario> loginUser(Login login) throws SQLException, UserDataInvalidException {
+    public Optional<Usuario> loginUser(Login login) throws SQLException {
         Connection connection = DBConnectionSingleton.getInstance().getConnection();
         try (PreparedStatement userlogin = connection.prepareStatement(LOGIN)) {
             userlogin.setString(1, login.getUser());
@@ -46,19 +47,9 @@ public class UserDB implements CRUD<Usuario> {
                         resultSet.getString("Nombre"),
                         resultSet.getString("Email"),
                         resultSet.getString("Contraseña"),
-                        resultSet.getString("Rol")
+                        UsuarioTypeEnum.valueOf(resultSet.getString("Rol"))
                 );
                 usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
-
-                Cartera_DigitalDB cartera_DigitalDB = new Cartera_DigitalDB();
-                Optional<Cartera_Digital> cartera_DigitalOpt = cartera_DigitalDB.selectById(usuario.getUsuario_Id());
-
-                if (cartera_DigitalOpt.isEmpty()) {
-                    throw new UserDataInvalidException(
-                            String.format("No se logro encontrar la cartera digital del usuario con correo: %s", usuario.getEmail()));
-                }
-
-                usuario.setSaldo(cartera_DigitalOpt.get().getSaldo());
 
                 return Optional.of(usuario);
             }
@@ -73,7 +64,7 @@ public class UserDB implements CRUD<Usuario> {
             insert.setString(1, t.getNombre());
             insert.setString(2, t.getEmail());
             insert.setString(3, t.getContraseña());
-            insert.setString(4, t.getRol());
+            insert.setString(4, t.getUsuarioTypeEnum().toString());
             insert.executeUpdate();
 
             //Obteniendo su Id
@@ -103,7 +94,7 @@ public class UserDB implements CRUD<Usuario> {
             try (PreparedStatement insert = connection.prepareStatement(ACTUALIZAR_USUARIO_SIN_PASSWORD)){
                 insert.setString(1, t.getNombre());
                 insert.setString(2, t.getEmail());
-                insert.setString(3, t.getRol());
+                insert.setString(3, t.getUsuarioTypeEnum().toString());
                 insert.setInt(4, t.getUsuario_Id());
                 insert.executeUpdate();
             }
@@ -112,7 +103,7 @@ public class UserDB implements CRUD<Usuario> {
                 insert.setString(1, t.getNombre());
                 insert.setString(2, t.getEmail());
                 insert.setString(3, t.getContraseña());
-                insert.setString(4, t.getRol());
+                insert.setString(4, t.getUsuarioTypeEnum().toString());
                 insert.setInt(5, t.getUsuario_Id());
                 insert.executeUpdate();
             }
@@ -141,7 +132,7 @@ public class UserDB implements CRUD<Usuario> {
                         resultSet.getString("Nombre"),
                         resultSet.getString("Email"),
                         resultSet.getString("Contraseña"),
-                        resultSet.getString("Rol")
+                        UsuarioTypeEnum.valueOf(resultSet.getString("Rol"))
                 );
                 usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
                 usuario.setContraseña("");
@@ -163,19 +154,10 @@ public class UserDB implements CRUD<Usuario> {
                         resultSet.getString("Nombre"),
                         resultSet.getString("Email"),
                         resultSet.getString("Contraseña"),
-                        resultSet.getString("Rol")
+                        UsuarioTypeEnum.valueOf(resultSet.getString("Rol"))
                 );
                 usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
                 usuario.setContraseña("");
-
-                Cartera_DigitalDB cartera_DigitalDB = new Cartera_DigitalDB();
-                Optional<Cartera_Digital> cartera_DigitalOpt = cartera_DigitalDB.selectById(usuario.getUsuario_Id());
-                if (cartera_DigitalOpt.isEmpty()) {
-                    throw new UserDataInvalidException(
-                            String.format("No se logro encontrar la cartera digital del usuario con correo: %s", usuario.getEmail()));
-                }
-
-                usuario.setSaldo(cartera_DigitalOpt.get().getSaldo());
 
                 return Optional.of(usuario);
             }
@@ -197,20 +179,11 @@ public class UserDB implements CRUD<Usuario> {
                         resultSet.getString("Nombre"),
                         resultSet.getString("Email"),
                         resultSet.getString("Contraseña"),
-                        resultSet.getString("Rol")
+                        UsuarioTypeEnum.valueOf(resultSet.getString("Rol"))
                 );
 
                 usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
                 usuario.setContraseña("");
-
-                Cartera_DigitalDB cartera_DigitalDB = new Cartera_DigitalDB();
-                Optional<Cartera_Digital> cartera_DigitalOpt = cartera_DigitalDB.selectById(usuario.getUsuario_Id());
-                if (cartera_DigitalOpt.isEmpty()) {
-                    throw new UserDataInvalidException(
-                            String.format("No se logro encontrar la cartera digital del usuario con correo: %s", usuario.getEmail()));
-                }
-
-                usuario.setSaldo(cartera_DigitalOpt.get().getSaldo());
 
                 usuarios.add(usuario);
             }

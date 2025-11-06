@@ -30,7 +30,7 @@ public class UsuarioService {
 
         if (userDb.existsEmail(newUserRequest.getEmail())) {
             throw new EntityAlreadyExistsException(
-                    String.format("El Usuario con el Email %s ya existe", newUserRequest.getEmail()));
+                    String.format("El Email %s ya esta relacionado con otro usuario", newUserRequest.getEmail()));
         }
 
         userDb.insert(usuario);
@@ -44,7 +44,7 @@ public class UsuarioService {
                     newUserRequest.getNombre(),
                     newUserRequest.getEmail(),
                     newUserRequest.getContraseña(),
-                    newUserRequest.getRol()
+                    newUserRequest.getUsuarioTypeEnum()
             );
             if (usuario.isValid()) {
                 throw new UserDataInvalidException("Error en los datos enviados");
@@ -95,12 +95,12 @@ public class UsuarioService {
                     usuarioRequest.getNombre(),
                     usuarioRequest.getEmail(),
                     usuarioRequest.getContraseña(),
-                    usuarioRequest.getRol());
+                    usuarioRequest.getUsuarioTypeEnum());
 
             usuario.setContraseña(usuarioUpdate.getContraseña());
         }
 
-        usuario.setRol(usuarioRequest.getRol());
+        usuario.setUsuarioTypeEnum(usuarioRequest.getUsuarioTypeEnum());
 
         if (usuario.isValid()) {
             throw new UserDataInvalidException("Error en los datos enviados");
