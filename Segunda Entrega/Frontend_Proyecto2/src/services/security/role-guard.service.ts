@@ -5,14 +5,15 @@ import { ActivatedRouteSnapshot, CanActivate, GuardResult, MaybeAsync, Router, R
     providedIn: 'root'
 })
 export class RoleGuardService implements CanActivate {
-
+    private url = localStorage.getItem('rol') ? '/home' : '/login';
     constructor(private router: Router) {
 
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
         if (!this.userRoleInAllowedRoles(route.data['allowedRoles'])) {
-            this.router.navigate(['/']);
+            console.log('RoleGuardService initialized with URL:', this.url);
+            this.router.navigate([this.url]);
             return false;
         }
 
@@ -20,7 +21,7 @@ export class RoleGuardService implements CanActivate {
     }
 
     userRoleInAllowedRoles(allowedRoles: string[]): boolean {
-        let role = localStorage.getItem('role');
-        return role != null && allowedRoles.includes(role);
+        let rol = localStorage.getItem('rol');
+        return rol != null && allowedRoles.includes(rol);
     }
 }

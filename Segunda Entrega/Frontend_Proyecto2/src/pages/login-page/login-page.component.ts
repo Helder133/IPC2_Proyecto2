@@ -4,7 +4,7 @@ import { RequestLogin } from '../../models/login/requestlogin';
 import { NgIf } from '@angular/common';
 import { loginService } from '../../services/login/login.service';
 import { UsuarioResponse } from '../../models/usuario/usuarioResponse';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-login-page',
@@ -19,7 +19,7 @@ export class LoginPageComponent implements OnInit {
     exception: boolean = false;
     mensajeError: string = '';
 
-    constructor(private formBuilder: FormBuilder, private loginService: loginService) {
+    constructor(private formBuilder: FormBuilder, private loginService: loginService, private router: Router) {
     }
 
     ngOnInit(): void {
@@ -40,8 +40,9 @@ export class LoginPageComponent implements OnInit {
         this.loginService.loginUser(this.fromLogin).subscribe({
             next: (usuarioResponse: UsuarioResponse) => {
                 this.responseUsuario = usuarioResponse;
-                localStorage.setItem('rol', this.responseUsuario.rol);
+                localStorage.setItem('rol', this.responseUsuario.usuarioTypeEnum);
                 localStorage.setItem('usuario_Id', JSON.stringify(this.responseUsuario.usuario_Id));
+                this.router.navigate(['/home']);
             },
             error: (error: any) => {
                 this.exception = true;

@@ -1,0 +1,27 @@
+<div class="container">
+    @if(isAdminSystem) {
+    <br>
+    <h1 class="text-center mb-4">Crear Nuevo Usuario</h1>
+    } @else {
+    <br>
+    <h1 class="text-center mb-4">Registrarse</h1>
+    }
+    <div class="row">
+        <div class="col">
+            <app-user-form></app-user-form>
+        </div>
+    </div>
+</div>
+@if(isAdminSystem) {
+<div class="container text-center">
+    <a routerLink="/users" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+        <i class="bi bi-arrow-left"> </i>
+        regresar</a>
+</div>
+} @else {
+<div class="container text-center">
+    <a routerLink="/login" class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+        <i class="bi bi-arrow-left"> </i>
+        regresar</a>
+</div>
+}

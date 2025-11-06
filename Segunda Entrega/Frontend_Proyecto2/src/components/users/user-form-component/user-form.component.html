@@ -1,89 +1,90 @@
-<body class="bg-dark text-light">
-    <div class="d-flex justify-content-center align-items-center min-vh-100">
-        <main class="w-100" style="max-width: 400px;">
-            @if(operationDone) {
-            <h4 class="text-center mb-4">Acutualizar Usuario</h4>
-            <div class="alert alert-success d-flex align-items-center">
-                <i class="bi bi-check-circle flex-shrink-0 me-2"></i>
-                <div>
-                    Operacion realizada con exito.
-                </div>
-            </div>
-            } @else {
-            <h4 class="text-center mb-4">Crear Nuevo Usuario</h4>
-            }
-            <form [formGroup]="newUserForm" (submit)="submit()">
-                <div class="row g-3">
-                    <div class="col-12">
-                        @if(!isEditMode) {
-                        <div class="form-group">
-                            <label type="hidden" for="usuario_Id" class="form-label">usuario_Id:</label>
-                            <input type="hidden" class="form-control" id="usuario_Id" name="usuario_Id"
-                                formControlName="usuario_Id" value="001" />
-                        </div>
-                        } @else {
-                        <div class="form-group">
-                            <label type="hidden" for="usuario_Id" class="form-label">usuario_Id:</label>
-                            <label type="hidden" class="form-control">{{userToUpdate.usuario_Id}}</label>
-                            <input type="hidden" name="usuario_Id" [value]="userToUpdate.usuario_Id" />
-                        </div>
-                        }
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label for="nombre" class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre">
-                            @if (newUserForm.controls['nombre'].invalid && newUserForm.controls['nombre'].dirty) {
-                            <div class="invalid-feedback">
-                                <div>
-                                    Se debe ingresar un nombre con 200 caracteres como maximo
-                                </div>
-                            </div>
-                            }
-                        </div>
-
-                    </div>
-
-                    <div class="col-12">
-                        <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" formControlName="email">
-                        @if (newUserForm.controls['email'].invalid && newUserForm.controls['email'].dirty) {
-                        <div class="invalid-feedback">
-                            <div>
-                                Se debe ingresar un email valido, y que no sobrepase los 100 caracteres como maximo
-                            </div>
-                        </div>
-                        }
-                    </div>
-
-                    <div class="col-12">
-                        <label for="contraseña" class="form-label">Contraseña:</label>
-                        <input type="password" class="form-control" id="contraseña" name="contraseña"
-                            formControlName="contraseña">
-                        @if (newUserForm.controls['contraseña'].invalid && newUserForm.controls['contraseña'].dirty) {
-                        <div class="invalid-feedback">
-                            <div>
-                                Se debe ingresar una contraseña con 50 caracteres como maximo
-                            </div>
-                        </div>
-                        }
-                    </div>
-
-                    <div class="col-6">
-                        <label for="rol" class="form-label">Rol:</label>
-                        <select id="rol" name="rol" class="form-control" formControlName="rol">
-                            <option *ngFor="let rol of roles" [value]="rol">
-                                {{ rol }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <hr class="my-4">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-secondary me-md-2" type="button" (click)="reset()">Limpiar</button>
-                    <button class="btn btn-primary" [disabled]="newUserForm.invalid">Guardar</button>
-                </div>
-            </form>
-        </main>
+<div class="d-md-flex justify-content-center align-items-center">
+    @if(operationDone) {
+    <div class="alert alert-success d-flex align-items-center">
+        <i class="bi bi-check-circle flex-shrink-0 me-2"></i>
+        <div>
+            Operacion realizada con exito.
+        </div>
     </div>
-</body>
+    } @if(exception) {
+    <div class="alert alert-danger d-flex align-items-center">
+        <i class="bi bi-x-circle flex-shrink-0 me-2"></i>
+        <div>
+            Error: {{mensajeError}}
+        </div>
+    </div>
+    }
+    <form [formGroup]="newUserForm" (submit)="submit()">
+        <div class="row g-3">
+            <div class="col-12">
+                @if(!isEditMode) {
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="usuario_Id" name="usuario_Id"
+                        formControlName="usuario_Id" value="001" />
+                </div>
+                } @else {
+                <div class="form-group">
+                    <label type="hidden" for="usuario_Id" class="form-label">usuario_Id:</label>
+                    <label type="hidden" class="form-control">{{userToUpdate.usuario_Id}}</label>
+                    <input type="hidden" name="usuario_Id" [value]="userToUpdate.usuario_Id" />
+                </div>
+                }
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre">
+                    @if (newUserForm.controls['nombre'].invalid && newUserForm.controls['nombre'].dirty) {
+                    <div class="invalid-feedback">
+                        <div>
+                            Se debe ingresar un nombre con 200 caracteres como maximo
+                        </div>
+                    </div>
+                    }
+                </div>
+
+            </div>
+
+            <div class="col-12">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" formControlName="email">
+                @if (newUserForm.controls['email'].invalid && newUserForm.controls['email'].dirty) {
+                <div class="invalid-feedback">
+                    <div>
+                        Se debe ingresar un email valido, y que no sobrepase los 100 caracteres como maximo
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="col-12">
+                <label for="contraseña" class="form-label">Contraseña:</label>
+                <input type="password" class="form-control" id="contraseña" name="contraseña"
+                    formControlName="contraseña">
+                @if (newUserForm.controls['contraseña'].invalid && newUserForm.controls['contraseña'].dirty) {
+                <div class="invalid-feedback">
+                    <div>
+                        Se debe ingresar una contraseña con 50 caracteres como maximo
+                    </div>
+                </div>
+                }
+            </div>
+            @if(isAdmin) {
+            <div class="col-6">
+                <label for="usuarioTypeEnum" class="form-label">Rol:</label>
+                <select id="usuarioTypeEnum" name="usuarioTypeEnum" class="form-control"
+                    formControlName="usuarioTypeEnum">
+                    <option *ngFor="let option of usuarioTypeEnums | keyvalue" [value]="option.key">
+                        {{ option.key }}
+                    </option>
+                </select>
+            </div>
+            }
+        </div>
+        <hr class="my-4">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-secondary me-md-2" type="button" (click)="reset()">Limpiar</button>
+            <button class="btn btn-primary" [disabled]="newUserForm.invalid">Guardar</button>
+        </div>
+    </form>
+</div>

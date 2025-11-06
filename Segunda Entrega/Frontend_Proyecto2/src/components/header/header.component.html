@@ -7,20 +7,24 @@
 
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a routerLink="/" class="nav-link text-light" routerLinkActive="active"
+                <a routerLink="/home" class="nav-link text-light" routerLinkActive="active"
                     [routerLinkActiveOptions]="{exact: true}">Home</a>
             </li>
+            @if(isAdminSystem) {
             <li class="nav-item">
-                <a routerLink="#" routerLinkActive="active" class="nav-link text-light">Login/logout</a>
+                <a routerLink="#" routerLinkActive="active" class="nav-link text-light">Admin Sistema</a>
             </li>
+            } @else if(isAdminCine) {
             <li class="nav-item">
-                <a routerLink="#" routerLinkActive="active" class="nav-link text-light">Eventos</a>
+                <a routerLink="#" routerLinkActive="active" class="nav-link text-light">Admin Cine</a>
             </li>
+            } @else if(isUser) {
             <li class="nav-item">
-                <a routerLink="#" routerLinkActive="active" class="nav-link text-light">Files</a>
+                <a routerLink="#" routerLinkActive="active" class="nav-link text-light">User</a>
             </li>
+            }
             <li class="nav-item">
-                <a href="#" class="nav-link text-light">About</a>
+                <a type="button" class="nav-link text-light btn btn-outline-danger" (click)="logout()">Cerrar sesión</a>
             </li>
         </ul>
     </header>
