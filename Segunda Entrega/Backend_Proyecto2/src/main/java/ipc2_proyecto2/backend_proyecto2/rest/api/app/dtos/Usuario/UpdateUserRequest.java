@@ -9,41 +9,41 @@ package ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario;
  * @author helder
  */
 public class UpdateUserRequest {
-    private String Nombre;
-    private String Email;
-    private String Contraseña;
-    private String Rol;
+    private String nombre;
+    private String email;
+    private String contraseña;
+    private String rol;
     
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
     
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
     public String getEmail() {
-        return Email;
+        return email;
     }
     
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     public String getContraseña() {
-        return Contraseña;
+        return contraseña;
     }
     
-    public void setContraseña(String Contraseña) {
-        this.Contraseña = Contraseña;
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
     
     public String getRol() {
-        return Rol;
+        return rol;
     }
     
-    public void setRol(String Rol) {
-        this.Rol = Rol;
+    public void setRol(String rol) {
+        this.rol = rol;
     }
     
 }

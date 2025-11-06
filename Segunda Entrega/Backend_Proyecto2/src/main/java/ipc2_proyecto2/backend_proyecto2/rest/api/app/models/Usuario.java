@@ -13,75 +13,75 @@ import org.apache.commons.lang3.StringUtils;
  * @author helder
  */
 public class Usuario {
-    private int Usuario_Id;
-    private String Nombre;
-    private String Email;
-    private String Contraseña;
-    private String Rol;
-    private float Saldo;
+    private int usuario_Id;
+    private String nombre;
+    private String email;
+    private String contraseña;
+    private String rol;
+    private float saldo;
 
     public Usuario(String Nombre, String Email, String Contraseña, String Rol) {
-        this.Nombre = Nombre;
-        this.Email = Email;
-        this.Contraseña = incriptar(Contraseña);
-        this.Rol = Rol;
-        this.Usuario_Id = 1;
+        this.nombre = Nombre;
+        this.email = Email;
+        this.contraseña = incriptar(Contraseña);
+        this.rol = Rol;
+        this.usuario_Id = 1;
     }
 
     public int getUsuario_Id() {
-        return Usuario_Id;
+        return usuario_Id;
     }
 
-    public void setUsuario_Id(int Usuario_Id) {
-        this.Usuario_Id = Usuario_Id;
+    public void setUsuario_Id(int usuario_Id) {
+        this.usuario_Id = usuario_Id;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getContraseña() {
-        return Contraseña;
+        return contraseña;
     }
 
-    public void setContraseña(String Contraseña) {
-        this.Contraseña = Contraseña;
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public String getRol() {
-        return Rol;
+        return rol;
     }
 
-    public void setRol(String Rol) {
-        this.Rol = Rol;
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     public float getSaldo() {
-        return Saldo;
+        return saldo;
     }
 
-    public void setSaldo(float Saldo) {
-        this.Saldo = Saldo;
+    public void setSaldo(float saldo) {
+        this.saldo = saldo;
     }
     
     public boolean isValid() {
-        return StringUtils.isBlank(Nombre) &&
-                StringUtils.isBlank(Email) &&
-                StringUtils.isBlank(Contraseña) &&
-                StringUtils.isBlank(Rol) &&
-                Usuario_Id > 0;
+        return StringUtils.isBlank(nombre) &&
+                StringUtils.isBlank(email) &&
+                StringUtils.isBlank(contraseña) &&
+                StringUtils.isBlank(rol) &&
+                usuario_Id > 0;
                 
     }
 

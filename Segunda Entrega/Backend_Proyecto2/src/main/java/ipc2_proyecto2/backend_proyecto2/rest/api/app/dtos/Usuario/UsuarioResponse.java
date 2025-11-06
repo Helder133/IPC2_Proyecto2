@@ -11,58 +11,58 @@ import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Usuario;
  * @author helder
  */
 public class UsuarioResponse {
-    private int Usuario_Id;
-    private String Nombre;
-    private String Email;
-    private String Rol;
-    private float Saldo;
+    private int usuario_Id;
+    private String nombre;
+    private String email;
+    private String rol;
+    private float saldo;
 
     public UsuarioResponse(Usuario usuario) {
-        this.Usuario_Id = usuario.getUsuario_Id();
-        this.Nombre = usuario.getNombre();
-        this.Email = usuario.getEmail();
-        this.Rol = usuario.getRol();
-        this.Saldo = usuario.getSaldo();
+        this.usuario_Id = usuario.getUsuario_Id();
+        this.nombre = usuario.getNombre();
+        this.email = usuario.getEmail();
+        this.rol = usuario.getRol();
+        this.saldo = usuario.getSaldo();
     }
     
     public int getUsuario_Id() {
-        return Usuario_Id;
+        return usuario_Id;
     }
 
-    public void setUsuario_Id(int Usuario_Id) {
-        this.Usuario_Id = Usuario_Id;
+    public void setUsuario_Id(int usuario_Id) {
+        this.usuario_Id = usuario_Id;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getRol() {
-        return Rol;
+        return rol;
     }
 
-    public void setRol(String Rol) {
-        this.Rol = Rol;
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     public float getSaldo() {
-        return Saldo;
+        return saldo;
     }
 
-    public void setSaldo(float Saldo) {
-        this.Saldo = Saldo;
+    public void setSaldo(float saldo) {
+        this.saldo = saldo;
     }
     
     

@@ -10,7 +10,6 @@ import ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario.UpdateUserRequ
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.EntityAlreadyExistsException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Usuario;
-import jakarta.persistence.EntityNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
