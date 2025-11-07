@@ -6,7 +6,7 @@ import { UsuarioTypeEnum } from "../../../models/usuario/usuarioTypeEnum";
 
 @Component({
     selector: 'app-home-page',
-    imports: [ HeaderComponent],
+    imports: [HeaderComponent],
     templateUrl: './home-page.component.html',
 })
 
@@ -15,7 +15,8 @@ export class HomePageComponent {
     isAdminSystem: boolean = localStorage.getItem('rol') == this.usuarioTypeEnums.Administrador_Sistema;
     isAdminCine: boolean = localStorage.getItem('rol') == this.usuarioTypeEnums.Administrador_Cine;
     isUser: boolean = localStorage.getItem('rol') == this.usuarioTypeEnums.Usuario;
-    
+    isAnunciante: boolean = localStorage.getItem('rol') == this.usuarioTypeEnums.Anunciante;
+
     usuarioRegistrado!: String;
     constructor(private roleGuardService: RoleGuardService) {
         if (this.isUser) {
@@ -24,6 +25,8 @@ export class HomePageComponent {
             this.usuarioRegistrado = "Como administrador de cine, tienes la capacidad de gestionar las funciones relacionadas con la programación de películas, la gestión de salas y la supervisión de las operaciones diarias del cine.";
         } else if (this.isAdminSystem) {
             this.usuarioRegistrado = "Como administrador del sistema, tienes acceso completo para gestionar usuarios, roles y configuraciones del sistema. Puedes supervisar todas las actividades y asegurarte de que la plataforma funcione sin problemas.";
+        } else if (this.isAnunciante) {
+            this.usuarioRegistrado = "Como anunciante, puedes crear y gestionar campañas publicitarias para promocionar tus productos o servicios en nuestra plataforma. Tienes acceso a herramientas de análisis para medir el rendimiento de tus anuncios.";
         }
     }
 }

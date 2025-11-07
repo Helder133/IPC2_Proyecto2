@@ -1,0 +1,21 @@
+<app-header></app-header>
+<div class="container text-center">
+    <a routerLink="/users" class="btn btn-primary">
+        <i class="bi bi-arrow-left-square-fill"></i>
+        Ir a listado de usuarios
+    </a>
+</div>
+<div class="container">
+    <h1>Modificar usuario {{ userCode }}</h1>
+    <div class="row">
+
+        @if (exists) {
+        <app-user-form [isEditMode]="true" [userToUpdate]="userToUpdate"></app-user-form>
+        }
+        @else {
+        <div class="alert alert-danger" role="alert">
+            No se encontro usuario con codigo {{userCode}}
+        </div>
+        }
+    </div>
+</div>

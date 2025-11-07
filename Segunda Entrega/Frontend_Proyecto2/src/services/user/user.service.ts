@@ -26,11 +26,15 @@ export class UserService {
         return this.httpClient.get<UsuarioResponse[]>(`${this.restConstants.getApiURL()}user/${code}`);
     }
 
+    public getUserByCodeNumber(code: number): Observable<UsuarioResponse> {
+        return this.httpClient.get<UsuarioResponse>(`${this.restConstants.getApiURL()}user/${code}`);
+    }
+
     public updateUser(code: string, usuarioToUpdate: UsuarioUpdateRequest): Observable<UsuarioResponse> {
         return this.httpClient.put<UsuarioResponse>(`${this.restConstants.getApiURL()}user/${code}`, usuarioToUpdate);
     }
 
-    public deleteUser(code: string): Observable<void> {
+    public deleteUser(code: number): Observable<void> {
         return this.httpClient.delete<void>(`${this.restConstants.getApiURL()}user/${code}`);
     }
 }

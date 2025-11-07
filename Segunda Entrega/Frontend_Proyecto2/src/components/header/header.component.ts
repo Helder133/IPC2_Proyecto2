@@ -12,6 +12,7 @@ export class HeaderComponent {
   isAdminSystem: boolean = localStorage.getItem('rol') == this.usuarioTypeEnums.Administrador_Sistema;
   isAdminCine: boolean = localStorage.getItem('rol') == this.usuarioTypeEnums.Administrador_Cine;
   isUser: boolean = localStorage.getItem('rol') == this.usuarioTypeEnums.Usuario;
+  isAnunciante: boolean = localStorage.getItem('rol') == this.usuarioTypeEnums.Anunciante;
 
   constructor(private router: Router) { }
 

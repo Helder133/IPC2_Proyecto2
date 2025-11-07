@@ -1,0 +1,19 @@
+<div class="card">
+    <div class="card-header">
+        {{ selectedUser.usuario_Id }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ selectedUser.nombre }}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Email: {{ selectedUser.email }}</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Rol: {{ selectedUser.usuarioTypeEnum }}</h6>
+
+        @if(isAdmin) {
+        <a routerLink="/users/update/{{ selectedUser.usuario_Id }}" class="btn btn-primary">Editar Usuario</a>
+
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+            title="Delete event {{ selectedUser.usuario_Id }}" (click)="deleteAction()">
+            <i class="bi bi-trash"></i>
+        </button>
+        }
+    </div>
+</div>

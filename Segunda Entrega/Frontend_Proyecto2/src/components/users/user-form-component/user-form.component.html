@@ -1,19 +1,19 @@
+@if(operationDone) {
+<div class="alert alert-success d-flex align-items-center">
+    <i class="bi bi-check-circle flex-shrink-0 me-2"></i>
+    <div>
+        Operacion realizada con exito.
+    </div>
+</div>
+} @if(exception) {
+<div class="alert alert-danger d-md-flex justify-content-center align-items-center">
+    <i class="bi bi-x-circle flex-shrink-0 me-2"></i>
+    <div>
+        Error: {{mensajeError}}
+    </div>
+</div>
+}
 <div class="d-md-flex justify-content-center align-items-center">
-    @if(operationDone) {
-    <div class="alert alert-success d-flex align-items-center">
-        <i class="bi bi-check-circle flex-shrink-0 me-2"></i>
-        <div>
-            Operacion realizada con exito.
-        </div>
-    </div>
-    } @if(exception) {
-    <div class="alert alert-danger d-flex align-items-center">
-        <i class="bi bi-x-circle flex-shrink-0 me-2"></i>
-        <div>
-            Error: {{mensajeError}}
-        </div>
-    </div>
-    }
     <form [formGroup]="newUserForm" (submit)="submit()">
         <div class="row g-3">
             <div class="col-12">
@@ -24,8 +24,6 @@
                 </div>
                 } @else {
                 <div class="form-group">
-                    <label type="hidden" for="usuario_Id" class="form-label">usuario_Id:</label>
-                    <label type="hidden" class="form-control">{{userToUpdate.usuario_Id}}</label>
                     <input type="hidden" name="usuario_Id" [value]="userToUpdate.usuario_Id" />
                 </div>
                 }
@@ -84,7 +82,9 @@
         <hr class="my-4">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <button class="btn btn-secondary me-md-2" type="button" (click)="reset()">Limpiar</button>
-            <button class="btn btn-primary" [disabled]="newUserForm.invalid">Guardar</button>
+            <button class="btn btn-primary" type="submit" [disabled]="newUserForm.invalid">
+                {{ isEditMode ? 'Guardar cambios' : 'Crear usuario' }}
+            </button>
         </div>
     </form>
 </div>

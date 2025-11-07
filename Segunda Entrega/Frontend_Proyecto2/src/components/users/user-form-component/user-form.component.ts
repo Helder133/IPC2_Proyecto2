@@ -16,7 +16,7 @@ export class UserFormComponent implements OnInit {
     @Input()
     isEditMode: boolean = false;
     @Input()
-    userToUpdate!: UsuarioRequest;
+    userToUpdate!: UsuarioResponse;
 
     newUserForm!: FormGroup;
     newUser!: UsuarioRequest;
@@ -39,10 +39,11 @@ export class UserFormComponent implements OnInit {
             usuario_Id: [null],
             nombre: [null, [Validators.required, Validators.maxLength(200)]],
             email: [null, [Validators.required, Validators.email, Validators.maxLength(100)]],
-            contraseña: [null, [Validators.required, Validators.maxLength(50)]],
+            contraseña: [null, [Validators.maxLength(50)]],
             usuarioTypeEnum: [null, [Validators.required]]
         });
         this.reset();
+        this.applyPasswordValidators();
     }
 
     usuarioTypeOptions = Object.keys(UsuarioTypeEnum).filter(val => isNaN(Number(val))).map(key => ({
@@ -50,18 +51,36 @@ export class UserFormComponent implements OnInit {
         value: UsuarioTypeEnum[key as keyof typeof UsuarioTypeEnum]
     }));
 
+    private applyPasswordValidators(): void {
+    const passControl = this.newUserForm.get('contraseña');
+    if (!passControl) return;
+
+    if (this.isEditMode) {
+        // modo edición: contraseña opcional (solo maxLength)
+        passControl.setValidators([Validators.maxLength(50)]);
+    } else {
+        // modo creación: contraseña obligatoria
+        passControl.setValidators([Validators.required, Validators.maxLength(50)]);
+    }
+    passControl.updateValueAndValidity();
+}
+
     submit(): void {
         console.log('se hizo submit');
         if (this.newUserForm.valid) {
+            console.log('Formulario válido');
             if (this.isEditMode) {
                 this.updateUser();
             } else {
                 this.saveNewUser();
             }
         }
+
     }
 
     reset(): void {
+        this.exception = false;
+        this.mensajeError = "";
         if (this.isEditMode) {
             this.resetOnEdit();
         } else {
@@ -103,7 +122,8 @@ export class UserFormComponent implements OnInit {
         });
     }
     private updateUser() {
-        this.userToUpdate = this.newUserForm.value as UsuarioRequest;
+        console.log('Actualizando usuario...');
+        this.userToUpdate = this.newUserForm.value as UsuarioResponse;
         const { usuario_Id, ...userToUpdate } = this.userToUpdate;
         this.userService.updateUser(usuario_Id.toString(), userToUpdate).subscribe({
             next: (usuarioResponse: UsuarioResponse) => {

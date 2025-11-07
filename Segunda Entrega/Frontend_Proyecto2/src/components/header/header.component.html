@@ -1,8 +1,9 @@
+<br>
 <div class="container">
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom border-secondary text-light">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-light text-decoration-none">
+        <a routerLink="/home" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-light text-decoration-none">
             <i class="bi bi-bootstrap" style="font-size: 2rem; color: #f8f9fa;"></i>
-            <span class="fs-4 ms-2">Simple header</span>
+            <span class="fs-4 ms-2">Menu Principal</span>
         </a>
 
         <ul class="nav nav-pills">
@@ -12,7 +13,10 @@
             </li>
             @if(isAdminSystem) {
             <li class="nav-item">
-                <a routerLink="#" routerLinkActive="active" class="nav-link text-light">Admin Sistema</a>
+                <a routerLink="/users" routerLinkActive="active" class="nav-link text-light">Usuarios</a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/cines" routerLinkActive="active" class="nav-link text-light">Cines</a>
             </li>
             } @else if(isAdminCine) {
             <li class="nav-item">
@@ -22,6 +26,9 @@
             <li class="nav-item">
                 <a routerLink="#" routerLinkActive="active" class="nav-link text-light">User</a>
             </li>
+            } @else if(isAnunciante) {
+            <li class="nav-item">
+                <a routerLink="#" routerLinkActive="active" class="nav-link text-light">Anunciante</a>
             }
             <li class="nav-item">
                 <a type="button" class="nav-link text-light btn btn-outline-danger" (click)="logout()">Cerrar sesión</a>

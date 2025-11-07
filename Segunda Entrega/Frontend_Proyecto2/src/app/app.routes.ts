@@ -5,6 +5,7 @@ import { UsersPageComponent } from '../pages/Users/users-page/users-page.compone
 import { HomePageComponent } from '../pages/home/home-page/home-page.component';
 import { UsuarioTypeEnum } from '../models/usuario/usuarioTypeEnum';
 import { RoleGuardService } from '../services/security/role-guard.service';
+import { UpdateUserPageComponent } from '../pages/Users/update-user-page/update-user-page.component';
 
 export const routes: Routes = [
     {
@@ -20,10 +21,17 @@ export const routes: Routes = [
         component: UsersPageComponent,
         canActivate: [RoleGuardService],
         data: {allowedRoles: [UsuarioTypeEnum.Administrador_Sistema]}
-    },{
+    },
+    {
+        path: 'users/update/:code',
+        component: UpdateUserPageComponent,
+        canActivate: [RoleGuardService],
+        data: {allowedRoles: [UsuarioTypeEnum.Administrador_Sistema]}
+    },
+    {
         path: 'home',
         component: HomePageComponent,
         canActivate: [RoleGuardService],
-        data: {allowedRoles: [UsuarioTypeEnum.Administrador_Sistema, UsuarioTypeEnum.Administrador_Cine, UsuarioTypeEnum.Usuario]}
+        data: {allowedRoles: [UsuarioTypeEnum.Administrador_Sistema, UsuarioTypeEnum.Administrador_Cine, UsuarioTypeEnum.Usuario, UsuarioTypeEnum.Anunciante]}
     }
 ];
