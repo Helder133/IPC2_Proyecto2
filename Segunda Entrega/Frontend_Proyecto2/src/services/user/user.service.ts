@@ -15,26 +15,26 @@ export class UserService {
     constructor(private httpClient: HttpClient) { }
 
     public createNewUser(usuarioRequest: UsuarioRequest): Observable<UsuarioResponse> {
-        return this.httpClient.post<UsuarioResponse>(`${this.restConstants.getApiURL()}user`, usuarioRequest);
+        return this.httpClient.post<UsuarioResponse>(`${this.restConstants.getApiURL()}users`, usuarioRequest);
     }
 
     public getAllUsers(): Observable<UsuarioResponse[]> {
-        return this.httpClient.get<UsuarioResponse[]>(`${this.restConstants.getApiURL()}user`);
+        return this.httpClient.get<UsuarioResponse[]>(`${this.restConstants.getApiURL()}users`);
     }
 
     public getUserByCode(code: string): Observable<UsuarioResponse[]> {
-        return this.httpClient.get<UsuarioResponse[]>(`${this.restConstants.getApiURL()}user/${code}`);
+        return this.httpClient.get<UsuarioResponse[]>(`${this.restConstants.getApiURL()}users/${code}`);
     }
 
     public getUserByCodeNumber(code: number): Observable<UsuarioResponse> {
-        return this.httpClient.get<UsuarioResponse>(`${this.restConstants.getApiURL()}user/${code}`);
+        return this.httpClient.get<UsuarioResponse>(`${this.restConstants.getApiURL()}users/${code}`);
     }
 
     public updateUser(code: string, usuarioToUpdate: UsuarioUpdateRequest): Observable<UsuarioResponse> {
-        return this.httpClient.put<UsuarioResponse>(`${this.restConstants.getApiURL()}user/${code}`, usuarioToUpdate);
+        return this.httpClient.put<UsuarioResponse>(`${this.restConstants.getApiURL()}users/${code}`, usuarioToUpdate);
     }
 
     public deleteUser(code: number): Observable<void> {
-        return this.httpClient.delete<void>(`${this.restConstants.getApiURL()}user/${code}`);
+        return this.httpClient.delete<void>(`${this.restConstants.getApiURL()}users/${code}`);
     }
 }
