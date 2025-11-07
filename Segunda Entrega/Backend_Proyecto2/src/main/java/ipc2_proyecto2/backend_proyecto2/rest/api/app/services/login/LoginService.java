@@ -5,8 +5,8 @@
 package ipc2_proyecto2.backend_proyecto2.rest.api.app.services.login;
 
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.login.UserLogin;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Login;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Usuario;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.login.Login;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.Usuario;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.db.UserDB;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidException;
 import java.sql.SQLException;

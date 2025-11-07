@@ -4,8 +4,8 @@
  */
 package ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario;
 
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Usuario;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.UsuarioTypeEnum;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.Usuario;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.UsuarioTypeEnum;
 
 /**
  *

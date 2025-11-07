@@ -7,7 +7,7 @@ package ipc2_proyecto2.backend_proyecto2.rest.api.app.resources.login;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario.UsuarioResponse;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.login.UserLogin;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidException;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Usuario;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.Usuario;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.services.login.LoginService;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.UriInfo;

@@ -4,7 +4,7 @@
  */
 package ipc2_proyecto2.backend_proyecto2.rest.api.app.db;
 
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Cartera_Digital;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.carteraDigital.Cartera_Digital;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

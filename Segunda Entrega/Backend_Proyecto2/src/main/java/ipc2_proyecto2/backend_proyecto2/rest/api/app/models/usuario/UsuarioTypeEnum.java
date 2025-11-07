@@ -1,4 +1,4 @@
-package ipc2_proyecto2.backend_proyecto2.rest.api.app.models;
+package ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -12,5 +12,6 @@ package ipc2_proyecto2.backend_proyecto2.rest.api.app.models;
 public enum UsuarioTypeEnum {
     Usuario,
     Administrador_Sistema,
-    Administrador_Cine
+    Administrador_Cine,
+    Anunciante
 }

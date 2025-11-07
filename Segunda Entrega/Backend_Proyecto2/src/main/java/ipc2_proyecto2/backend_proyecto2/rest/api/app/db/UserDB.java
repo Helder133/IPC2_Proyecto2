@@ -6,10 +6,10 @@ package ipc2_proyecto2.backend_proyecto2.rest.api.app.db;
 
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.EntityAlreadyExistsException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidException;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Cartera_Digital;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Login;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.Usuario;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.UsuarioTypeEnum;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.carteraDigital.Cartera_Digital;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.login.Login;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.Usuario;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.UsuarioTypeEnum;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
