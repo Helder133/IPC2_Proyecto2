@@ -1,0 +1,4 @@
+export enum EstadoTypeEnum {
+    HABILITADO = "HABILITADO",
+    DESHABILITADO = "DESHABILITADO"
+}

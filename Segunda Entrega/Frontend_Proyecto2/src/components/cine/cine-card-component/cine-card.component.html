@@ -1,0 +1,20 @@
+<div class="card p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+    <div class="card-header">
+        {{ selectedCine.cine_Id }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ selectedCine.nombre }}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Telefono: {{ selectedCine.telefono }}</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Direccion: {{ selectedCine.direccion }}</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Estado: {{ selectedCine.estadoTypeEnum }}</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Fecha de creacion: {{ selectedCine.fechaCreacion | date:'MMMM, dd yyyy'}}</h6>
+        @if(isAdmin) {
+        <a routerLink="/cines/update/{{ selectedCine.cine_Id }}" class="btn btn-primary">Editar Cine</a>
+
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+            title="Delete cine {{ selectedCine.cine_Id }}" (click)="deleteAction()">
+            <i class="bi bi-trash"></i>
+        </button>
+        }
+    </div>
+</div>

@@ -1,20 +1,20 @@
 <app-header></app-header>
 <div class="container text-center">
-    <a routerLink="/users" class="btn btn-primary">
+    <a routerLink="/cines" class="btn btn-primary">
         <i class="bi bi-arrow-left-square-fill"></i>
-        Ir a listado de usuarios
+        Ir a listado de cines
     </a>
 </div>
 <div class="container">
-    <h1>Modificar usuario {{ userCode }}</h1>
+    <h1>Modificar cine {{ cineCode }}</h1>
     <div class="row">
 
         @if (exists) {
-        <app-user-form [isEditMode]="true" [userToUpdate]="userToUpdate"></app-user-form>
+        <app-cine-form [isEditMode]="true" [cineToUpdate]="cineToUpdate"></app-cine-form>
         }
         @else {
         <div class="alert alert-danger" role="alert">
-            No se encontro cine con codigo {{userCode}}
+            No se encontro cine con codigo {{cineCode}}
         </div>
         }
     </div>

@@ -1,56 +1,55 @@
 import { Component, OnInit } from "@angular/core";
-import { RouterLink } from "@angular/router";
 import { HeaderComponent } from "../../../components/header/header.component";
-import { UsuarioResponse } from "../../../models/usuario/usuarioResponse";
-import { RoleGuardService } from "../../../services/security/role-guard.service";
-import { UsuarioTypeEnum } from "../../../models/usuario/usuarioTypeEnum";
-import { UserService } from "../../../services/user/user.service";
-import { UserCardComponent } from "../../../components/users/user-card-component/user-card.component";
+import { CineCardComponent } from "../../../components/cine/cine-card-component/cine-card.component";
+import { RouterLink } from "@angular/router";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { ConfirmationModalUserComponent } from "../../../components/confirmation-modal/confirmation-modal-user.component/confirmation-modal-user.component";
+import { UsuarioTypeEnum } from "../../../models/usuario/usuarioTypeEnum";
+import { CineResponse } from "../../../models/cine/cineResponse";
+import { CineService } from "../../../services/cine/user.service";
+import { RoleGuardService } from "../../../services/security/role-guard.service";
+import { ConfirmationModalCineComponent } from "../../../components/confirmation-modal/confirmation-modal-cine.component/confirmation-modal-user.component";
 
 @Component({
-    selector: 'app-users-page',
-    imports: [HeaderComponent, UserCardComponent, RouterLink, ConfirmationModalUserComponent, FormsModule, ReactiveFormsModule],
-    templateUrl: './users-page.component.html',
+    selector: 'app-cines-page',
+    imports: [HeaderComponent, CineCardComponent, ConfirmationModalCineComponent, RouterLink, FormsModule, ReactiveFormsModule],
+    templateUrl: './cines-page.component.html'
 })
-
-export class UsersPageComponent implements OnInit {
-
+export class CinesPageComponent implements OnInit{
     usuarioTypeEnums = UsuarioTypeEnum;
-    protected users: UsuarioResponse[] = [];
-    selectedUser!: UsuarioResponse;
+    protected cines: CineResponse[] = [];
+    selectedCine!: CineResponse;
     deleted: boolean = false;
     isAdmin: boolean;
 
-    nombreABuscar!: FormGroup;
+    nombreABuscarForm!: FormGroup;
+
     exception: boolean = false;
     mensajeError: string = "";
 
-    constructor(private userService: UserService,
+    constructor(private cineService: CineService,
         private roleGuardService: RoleGuardService, private formBuilder: FormBuilder) {
         this.isAdmin = roleGuardService.userRoleInAllowedRoles([this.usuarioTypeEnums.Administrador_Sistema]);
     }
     ngOnInit(): void {
-        this.loadUsers();
-        this.nombreABuscar = this.formBuilder.group({
+        this.loadCines();
+        this.nombreABuscarForm = this.formBuilder.group({
             nombre: [null]
         });
     }
 
-    onSelectedUser(user: UsuarioResponse): void {
-        this.selectedUser = user;
+    onSelectedCine(cine: CineResponse): void {
+        this.selectedCine = cine;
         this.deleted = false;
     }
 
     buscarPorNombre(): void {
-        if (this.nombreABuscar.value.nombre == null) {
-            this.loadUsers();
+        if (this.nombreABuscarForm.value.nombre == null) {
+            this.loadCines();
             return;
         }
-        this.userService.getUserByCode(this.nombreABuscar.value.nombre).subscribe({
-            next: (userFromServer: UsuarioResponse[]) => {
-                this.users = userFromServer;
+        this.cineService.getCineByCode(this.nombreABuscarForm.value.nombre).subscribe({
+            next: (cineFromServer: CineResponse[]) => {
+                this.cines = cineFromServer;
             }, error: (error: any) => {
                 this.exception = true;
                 // Si el backend envía un JSON con el campo "error"
@@ -65,10 +64,11 @@ export class UsersPageComponent implements OnInit {
         });
     }
 
-    private loadUsers(): void {
-        this.userService.getAllUsers().subscribe({
-            next: (usersFromServer: UsuarioResponse[]) => {
-                this.users = this.descartarUsuariosAdminSistema(usersFromServer);
+    private loadCines() {
+        this.cineService.getAllCines().subscribe({
+            next: (cinesFromServer: CineResponse[]) => {
+                this.cines = cinesFromServer;
+                console.log('Cines cargados:', this.cines);
             }, error: (error: any) => {
                 this.exception = true;
                 // Si el backend envía un JSON con el campo "error"
@@ -82,17 +82,13 @@ export class UsersPageComponent implements OnInit {
             }
         });
     }
-    descartarUsuariosAdminSistema(usersFromServer: UsuarioResponse[]): UsuarioResponse[] {
-        return usersFromServer.filter(user => user.usuario_Id.toString() !== localStorage.getItem('usuario_Id'));
-    }
 
-    deleteUser(): void {
-        this.userService.deleteUser(this.selectedUser.usuario_Id).subscribe({
+    deleteCine(): void {
+        this.cineService.deleteCine(this.selectedCine.cine_Id).subscribe({
             next: () => {
-                this.loadUsers();
                 this.deleted = true;
-            },
-            error: (error: any) => {
+                this.loadCines();
+            }, error: (error: any) => {
                 this.exception = true;
                 // Si el backend envía un JSON con el campo "error"
                 if (error.error && error.error.error) {

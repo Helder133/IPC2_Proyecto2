@@ -31,8 +31,9 @@
             <div class="col-12">
                 <div class="form-group">
                     <label for="nombre" class="form-label">Nombre:</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre">
-                    @if (newUserForm.controls['nombre'].invalid && newUserForm.controls['nombre'].dirty) {
+                    <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre"
+                    [class.is-invalid]="newUserForm.controls['nombre'].dirty && newUserForm.controls['nombre'].invalid">
+                    @if (newUserForm.controls['nombre'].invalid && newUserForm.controls['nombre'].touched) {
                     <div class="invalid-feedback">
                         <div>
                             Se debe ingresar un nombre con 200 caracteres como maximo
@@ -45,8 +46,9 @@
 
             <div class="col-12">
                 <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" formControlName="email">
-                @if (newUserForm.controls['email'].invalid && newUserForm.controls['email'].dirty) {
+                <input type="email" class="form-control" id="email" name="email" formControlName="email"
+                [class.is-invalid]="newUserForm.controls['email'].dirty && newUserForm.controls['email'].invalid">
+                @if (newUserForm.controls['email'].invalid && newUserForm.controls['email'].touched) {
                 <div class="invalid-feedback">
                     <div>
                         Se debe ingresar un email valido, y que no sobrepase los 100 caracteres como maximo
@@ -57,9 +59,9 @@
 
             <div class="col-12">
                 <label for="contraseña" class="form-label">Contraseña:</label>
-                <input type="password" class="form-control" id="contraseña" name="contraseña"
-                    formControlName="contraseña">
-                @if (newUserForm.controls['contraseña'].invalid && newUserForm.controls['contraseña'].dirty) {
+                <input type="password" class="form-control" id="contraseña" name="contraseña" formControlName="contraseña"
+                [class.is-invalid]="newUserForm.controls['contraseña'].dirty && newUserForm.controls['contraseña'].invalid">
+                @if (newUserForm.controls['contraseña'].invalid && newUserForm.controls['contraseña'].touched) {
                 <div class="invalid-feedback">
                     <div>
                         Se debe ingresar una contraseña con 50 caracteres como maximo

@@ -1,0 +1,101 @@
+@if(operationDone) {
+<div class="alert alert-success d-flex align-items-center">
+    <i class="bi bi-check-circle flex-shrink-0 me-2"></i>
+    <div>
+        Operacion realizada con exito.
+    </div>
+</div>
+} @if(exception) {
+<div class="alert alert-danger d-md-flex justify-content-center align-items-center">
+    <i class="bi bi-x-circle flex-shrink-0 me-2"></i>
+    <div>
+        Error: {{mensajeError}}
+    </div>
+</div>
+}
+<div class="d-md-flex justify-content-center align-items-center">
+    <form [formGroup]="newCineForm" (submit)="submit()">
+        <div class="row g-3">
+            <div class="col-12">
+                @if(!isEditMode) {
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="cine_Id" name="cine_Id"
+                        formControlName="cine_Id" value="001" />
+                </div>
+                } @else {
+                <div class="form-group">
+                    <input type="hidden" name="cine_Id" [value]="cineToUpdate.cine_Id" />
+                </div>
+                }
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre"
+                    [class.is-invalid]="newCineForm.controls['nombre'].dirty && newCineForm.controls['nombre'].invalid">
+                    @if (newCineForm.controls['nombre'].invalid && newCineForm.controls['nombre'].touched) {
+                    <div class="invalid-feedback">
+                        <div>
+                            Se debe ingresar un nombre con 200 caracteres como maximo
+                        </div>
+                    </div>
+                    }
+                </div>
+
+            </div>
+
+            <div class="col-12">
+                <label for="telefono" class="form-label">Teléfono:</label>
+                <input type="text" class="form-control" id="telefono" name="telefono" formControlName="telefono"
+                [class.is-invalid]="newCineForm.controls['telefono'].dirty && newCineForm.controls['telefono'].invalid">
+                @if (newCineForm.controls['telefono'].invalid && newCineForm.controls['telefono'].touched) {
+                <div class="invalid-feedback">
+                    <div>
+                        Se debe ingresar un teléfono válido, y que no sobrepase los 10 caracteres como máximo
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="col-12">
+                <label for="direccion" class="form-label">Dirección:</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" formControlName="direccion"
+                [class.is-invalid]="newCineForm.controls['direccion'].dirty && newCineForm.controls['direccion'].invalid">
+                @if (newCineForm.controls['direccion'].invalid && newCineForm.controls['direccion'].touched) {
+                <div class="invalid-feedback">
+                    <div>
+                        Se debe ingresar una dirección con 200 caracteres como máximo
+                    </div>
+                </div>
+                }
+            </div>
+            @if(isAdmin) {
+            <div class="col-6">
+                <label for="estadoTypeEnum" class="form-label">Estado:</label>
+                <select id="estadoTypeEnum" name="estadoTypeEnum" class="form-control" formControlName="estadoTypeEnum">
+                    <option *ngFor="let option of estadoTypeEnums | keyvalue" [value]="option.key">
+                        {{ option.key }}
+                    </option>
+                </select>
+            </div>
+            }
+            <div class="col-12"> 
+                <input type="hidden" class="form-control" id="fechaCreacion" name="fechaCreacion"
+                    formControlName="fechaCreacion">
+                @if (newCineForm.controls['fechaCreacion'].invalid && newCineForm.controls['fechaCreacion'].dirty) {
+                <div class="invalid-feedback">
+                    <div>
+                        Se debe ingresar una fecha válida
+                    </div>
+                </div>
+                }
+            </div>
+        </div> 
+        <hr class="my-4">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-secondary me-md-2" type="button" (click)="reset()">Limpiar</button>
+            <button class="btn btn-primary" type="submit" [disabled]="newCineForm.invalid">
+                {{ isEditMode ? 'Guardar cambios' : 'Crear cine' }}
+            </button>
+        </div>
+    </form>
+</div>

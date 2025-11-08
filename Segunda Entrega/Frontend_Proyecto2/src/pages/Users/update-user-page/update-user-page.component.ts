@@ -14,6 +14,8 @@ export class UpdateUserPageComponent implements OnInit {
   userCode!: number;
   userToUpdate!: UsuarioResponse;
   exists: boolean = false;
+  exception: boolean = false;
+  mensajeError!: string;
 
   constructor(private router: ActivatedRoute, private userService: UserService) {
 
@@ -27,7 +29,15 @@ export class UpdateUserPageComponent implements OnInit {
         this.exists = true;
       },
       error: (error: any) => {
-        console.log(error);
+        this.exception = true;
+        // Si el backend envía un JSON con el campo "error"
+        if (error.error && error.error.error) {
+          this.mensajeError = error.error.error;
+        }
+        // Si no viene en formato esperado, mostrar el mensaje general
+        else {
+          this.mensajeError = "Ocurrió un error inesperado. Intente de nuevo.";
+        }
       }
     });
   }

@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UsuarioResponse } from '../../../models/usuario/usuarioResponse';
 
 @Component({
-  selector: 'app-confirmation-modal',
+  selector: 'app-confirmation-modal-user',
   imports: [],
-  templateUrl: './confirmation-modal.component.html',
+  templateUrl: './confirmation-modal-user.component.html',
 })
-export class ConfirmationModalComponent {
+export class ConfirmationModalUserComponent {
 
   @Input()
   selectedUser!: UsuarioResponse;
