@@ -73,10 +73,6 @@ public class UserDB implements CRUD<Usuario> {
             if (result.next()) {
                 t.setUsuario_Id(result.getInt("Usuario_Id"));
             }
-
-            Cartera_Digital cartera_Digital = new Cartera_Digital(t.getUsuario_Id(), 0);
-            Cartera_DigitalDB cartera_DigitalDB = new Cartera_DigitalDB();
-            cartera_DigitalDB.insert(cartera_Digital);
         }
 
         return t;
@@ -192,13 +188,25 @@ public class UserDB implements CRUD<Usuario> {
         return usuarios;
     }
 
-    public boolean existsEmail(String email) throws SQLException {
+    public Optional<Usuario> existsEmail(String email) throws SQLException {
         Connection connection = DBConnectionSingleton.getInstance().getConnection();
         try (PreparedStatement select = connection.prepareStatement(BUSCAR_POR_EMAIL)) {
             select.setString(1, email);
-            ResultSet result = select.executeQuery();
-            return result.next();
+            ResultSet resultSet = select.executeQuery();
+            if (resultSet.next()) {
+                Usuario usuario = new Usuario(
+                        resultSet.getString("Nombre"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("Contraseña"),
+                        UsuarioTypeEnum.valueOf(resultSet.getString("Rol"))
+                );
+                usuario.setUsuario_Id(resultSet.getInt("Usuario_Id"));
+                usuario.setContraseña("");
+
+                return Optional.of(usuario);
+            }
         }
+        return Optional.empty();
     }
     
     private boolean verificarEmail(Usuario usuario) throws SQLException{

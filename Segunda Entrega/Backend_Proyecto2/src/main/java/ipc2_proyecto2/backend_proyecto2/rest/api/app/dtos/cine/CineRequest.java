@@ -15,6 +15,7 @@ import java.time.LocalDate;
  * @author helder
  */
 public class CineRequest {
+    private int cine_Id;
     private String nombre;
     private String telefono;
     private String direccion;
@@ -62,4 +63,13 @@ public class CineRequest {
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
+    public int getCine_Id() {
+        return cine_Id;
+    }
+
+    public void setCine_Id(int cine_Id) {
+        this.cine_Id = cine_Id;
+    }
+    
 }

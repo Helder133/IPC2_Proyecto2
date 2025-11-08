@@ -11,12 +11,12 @@ CREATE TABLE IF NOT EXISTS Usuario (
 	Nombre VARCHAR(200) NOT NULL,
 	Email VARCHAR (100) UNIQUE NOT NULL,
 	Contraseña VARCHAR (50) NOT NULL,
-	Rol ENUM('Usuario','Administrador_Sistema','Administrador_Cine') NOT NULL DEFAULT 'Usuario'
+	Rol ENUM('Usuario','Administrador_Sistema','Administrador_Cine', 'Anunciante') NOT NULL DEFAULT 'Usuario'
 );
 
 CREATE TABLE IF NOT EXISTS Cartera_Digital (
 	Cartera_Digital_Id INT AUTO_INCREMENT PRIMARY KEY,
-	Usuario_Id INT NOT NULL,
+	Usuario_Id INT NOT NULL UNIQUE,
 	Saldo DECIMAL (10,2) NOT NULL,
 	CONSTRAINT fk_Usuario1 FOREIGN KEY (Usuario_Id) REFERENCES Usuario (Usuario_Id) ON DELETE CASCADE
 );
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Historial (
 	Historial_Id INT AUTO_INCREMENT PRIMARY KEY, 
 	Cartera_Digital_Id INT NOT NULL,
 	Fecha DATE NOT NULL,
-	Transaccion ENUM ('PAGO', 'DEPOSITO') NOT NULL,
+	Transaccion ENUM ('PAGO', 'DEPOSITO', 'CREACION') DEFAULT 'CREACION' NOT NULL,
 	Descripcion VARCHAR (150) NOT NULL,
 	CONSTRAINT fk_Cartera_Digital FOREIGN KEY (Cartera_Digital_Id) REFERENCES Cartera_Digital (Cartera_Digital_Id) ON DELETE CASCADE
 );

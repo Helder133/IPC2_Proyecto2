@@ -10,6 +10,7 @@ import ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.Usuario.UpdateUserRequ
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.EntityAlreadyExistsException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.Usuario;
+import ipc2_proyecto2.backend_proyecto2.rest.api.app.services.carteraDigital.CarteraDigitalService;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +29,16 @@ public class UsuarioService {
 
         Usuario usuario = extracUser(newUserRequest);
 
-        if (userDb.existsEmail(newUserRequest.getEmail())) {
+        if (!existsEmail(newUserRequest.getEmail()).isEmpty()) {
             throw new EntityAlreadyExistsException(
                     String.format("El Email %s ya esta relacionado con otro usuario", newUserRequest.getEmail()));
         }
 
         userDb.insert(usuario);
-
+        
+        CarteraDigitalService carteraDigitalService = new CarteraDigitalService();
+        carteraDigitalService.createCarteraDigital(usuario);
+        
         return usuario;
     }
 
@@ -54,7 +58,12 @@ public class UsuarioService {
             throw new UserDataInvalidException("Error en los datos enviados");
         }
     }
-
+    
+    public Optional<Usuario> existsEmail(String email) throws SQLException {
+        UserDB userDB = new UserDB();
+        return userDB.existsEmail(email);
+    }
+    
     public List<Usuario> getAllUsers() throws SQLException {
         UserDB userDB = new UserDB();
 

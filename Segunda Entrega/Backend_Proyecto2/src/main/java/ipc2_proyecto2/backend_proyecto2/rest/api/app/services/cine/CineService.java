@@ -23,12 +23,12 @@ public class CineService {
     public Cine createCine(CineRequest cineRequest) throws UserDataInvalidException, SQLException, EntityAlreadyExistsException {
         CineDB cineDB = new CineDB();
         Cine cine = extraerCine(cineRequest);
-        
-        if (cineDB.existsTelefono(cineRequest.getTelefono())) {
+
+        if (!existsTelefono(cineRequest.getTelefono()).isEmpty()) {
             throw new EntityAlreadyExistsException(
                     String.format("El Telefono %s ya esta relacionado con otro cine", cineRequest.getTelefono()));
         }
-        
+
         return cineDB.insert(cine);
     }
 
@@ -48,6 +48,11 @@ public class CineService {
         } catch (IllegalArgumentException | NullPointerException e) {
             throw new UserDataInvalidException("Error en los datos enviados");
         }
+    }
+
+    public Optional<Cine> existsTelefono(String telefono) throws SQLException {
+        CineDB cineDB = new CineDB();
+        return cineDB.existsTelefono(telefono);
     }
 
     public List<Cine> getAllCine() throws SQLException {

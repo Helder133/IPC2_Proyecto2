@@ -157,13 +157,24 @@ public class CineDB implements CRUD<Cine> {
         }
     }
 
-    public boolean existsTelefono(String telefono) throws SQLException {
+    public Optional<Cine> existsTelefono(String telefono) throws SQLException {
         Connection connection = DBConnectionSingleton.getInstance().getConnection();
         try (PreparedStatement insert = connection.prepareStatement(EXISTS_TELEFONO)) {
             insert.setString(1, telefono);
-            ResultSet result = insert.executeQuery();
-            return result.next();
+            ResultSet resultSet = insert.executeQuery();
+            if (resultSet.next()) {
+                Cine cine = new Cine (resultSet.getString("Nombre"),
+                        resultSet.getString("Telefono"),
+                        resultSet.getString("Direccion"),
+                        EstadoTypeEnum.valueOf(resultSet.getString("Estado")),
+                        resultSet.getDate("Fecha_Creacion").toLocalDate()
+                );
+                cine.setCine_Id(resultSet.getInt("Cine_Id"));
+                
+                return Optional.of(cine);
+            }
         }
+        return Optional.empty();
     }
     
     private boolean existsCine(int cine_Id) throws SQLException {
