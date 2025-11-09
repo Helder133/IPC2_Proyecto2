@@ -30,6 +30,7 @@ public class CineDB implements CRUD<Cine> {
     private static final String ACTUALIZAR_CINE = "UPDATE Cine SET Nombre = ?, Telefono = ?, Direccion = ?, Estado = ?, Fecha_Creacion = ? WHERE Cine_Id = ?";
     private static final String ELIMINAR_CINE = "DELETE FROM Cine WHERE Cine_Id = ?";
     private static final String EXISTS_TELEFONO = "SELECT * FROM Cine WHERE Telefono = ?";
+    private static final String VERIFICAR_NUEVO_NUMERO = "SELECT * FROM Cine WHERE Telefono = ? AND Cine_Id <> ?";
     
     @Override
     public Cine insert(Cine t) throws SQLException {
@@ -58,6 +59,9 @@ public class CineDB implements CRUD<Cine> {
         if (!existsCine(t.getCine_Id())) {
             throw new EntityAlreadyExistsException("El cine que desea actualizar no exite");
         }
+        if (verificarNuevoNumero(t)) {
+            throw new EntityAlreadyExistsException("El numero de telefono ya esta relacionado con otro cine");
+        }
         Connection connection = DBConnectionSingleton.getInstance().getConnection();
         try (PreparedStatement update = connection.prepareStatement(ACTUALIZAR_CINE)) {
             update.setString(1, t.getNombre());
@@ -66,10 +70,6 @@ public class CineDB implements CRUD<Cine> {
             update.setString(4, t.getEstadoTypeEnum().toString());
             update.setDate(5, Date.valueOf(t.getFechaCreacion()));
             update.setInt(6, t.getCine_Id());
-            if ( update.executeUpdate() == 0) {
-                throw new SQLException("Error al actualizar");
-            }
-           
         }
     }
 
@@ -181,6 +181,15 @@ public class CineDB implements CRUD<Cine> {
         Connection connection = DBConnectionSingleton.getInstance().getConnection();
         try (PreparedStatement insert = connection.prepareStatement(SELECCIONAR_POR_INT)) {
             insert.setInt(1, cine_Id);
+            ResultSet result = insert.executeQuery();
+            return result.next();
+        }
+    }
+    private boolean verificarNuevoNumero (Cine cine) throws SQLException {
+        Connection connection = DBConnectionSingleton.getInstance().getConnection();
+        try (PreparedStatement insert = connection.prepareStatement(VERIFICAR_NUEVO_NUMERO)) {
+            insert.setString(1, cine.getTelefono());
+            insert.setInt(2, cine.getCine_Id());
             ResultSet result = insert.executeQuery();
             return result.next();
         }

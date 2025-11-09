@@ -6,7 +6,6 @@ package ipc2_proyecto2.backend_proyecto2.rest.api.app.db;
 
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.EntityAlreadyExistsException;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.exceptions.UserDataInvalidException;
-import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.carteraDigital.Cartera_Digital;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.login.Login;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.Usuario;
 import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.usuario.UsuarioTypeEnum;
@@ -119,11 +118,14 @@ public class UserDB implements CRUD<Usuario> {
     @Override
     public List<Usuario> select() throws SQLException {
         List<Usuario> usuarios = new ArrayList<>();
+        int max = 10;
+        int contador = 0;
         Connection connection = DBConnectionSingleton.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(TODOS_LOS_USUARIOS);) {
             ResultSet resultSet = query.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next() && contador <= max) {
+                contador ++;
                 Usuario usuario = new Usuario(
                         resultSet.getString("Nombre"),
                         resultSet.getString("Email"),
@@ -164,13 +166,16 @@ public class UserDB implements CRUD<Usuario> {
     @Override
     public List<Usuario> selectByString(String code) throws SQLException, UserDataInvalidException {
         List<Usuario> usuarios = new ArrayList<>();
+        int max = 10;
+        int contador = 0;
         Connection connection = DBConnectionSingleton.getInstance().getConnection();
         try (PreparedStatement query = connection.prepareStatement(USUARIOS_BUSCADOS_POR_NOMBRE)) {
             query.setString(1, "%" + code + "%");
 
             ResultSet resultSet = query.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next() && contador <= max) {
+                contador ++;
                 Usuario usuario = new Usuario(
                         resultSet.getString("Nombre"),
                         resultSet.getString("Email"),

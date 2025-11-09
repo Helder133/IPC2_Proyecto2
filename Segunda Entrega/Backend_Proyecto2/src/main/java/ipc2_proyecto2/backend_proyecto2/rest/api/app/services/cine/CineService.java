@@ -23,7 +23,7 @@ public class CineService {
     public Cine createCine(CineRequest cineRequest) throws UserDataInvalidException, SQLException, EntityAlreadyExistsException {
         CineDB cineDB = new CineDB();
         Cine cine = extraerCine(cineRequest);
-
+        
         if (!existsTelefono(cineRequest.getTelefono()).isEmpty()) {
             throw new EntityAlreadyExistsException(
                     String.format("El Telefono %s ya esta relacionado con otro cine", cineRequest.getTelefono()));

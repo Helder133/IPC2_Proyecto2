@@ -33,5 +33,7 @@ public class AdminCine {
         this.cine_Id = cine_Id;
     }
     
-    
+    public boolean isValid() {
+    return this.cine_Id <= 0 && this.usuario_Id <= 0;
+    }
 }
