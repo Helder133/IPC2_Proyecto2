@@ -12,24 +12,24 @@ import ipc2_proyecto2.backend_proyecto2.rest.api.app.models.clasificacion.Clasif
  */
 public class ClasificacionResponse {
     
-    private int casificacion_Id;
+    private int clasificacion_Id;
     private String nombre;
     private int edadMinima;
     private String descripcion;
 
     public ClasificacionResponse(Clasificacion clasificacion) {
-        this.casificacion_Id = clasificacion.getCasificacion_Id();
+        this.clasificacion_Id = clasificacion.getCasificacion_Id();
         this.descripcion = clasificacion.getDescripcion();
         this.edadMinima = clasificacion.getEdadMinima();
         this.nombre = clasificacion.getNombre();
     }
 
-    public int getCasificacion_Id() {
-        return casificacion_Id;
+    public int getClasificacion_Id() {
+        return clasificacion_Id;
     }
 
-    public void setCasificacion_Id(int casificacion_Id) {
-        this.casificacion_Id = casificacion_Id;
+    public void setClasificacion_Id(int clasificacion_Id) {
+        this.clasificacion_Id = clasificacion_Id;
     }
 
     public String getNombre() {

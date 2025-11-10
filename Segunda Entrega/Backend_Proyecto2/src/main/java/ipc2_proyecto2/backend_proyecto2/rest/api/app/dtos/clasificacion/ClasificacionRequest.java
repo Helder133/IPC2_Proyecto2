@@ -9,7 +9,7 @@ package ipc2_proyecto2.backend_proyecto2.rest.api.app.dtos.clasificacion;
  * @author helder
  */
 public class ClasificacionRequest {
-
+    private int clasificacion_Id;        
     private String nombre;
     private int edadMinima;
     private String descripcion;
@@ -37,6 +37,13 @@ public class ClasificacionRequest {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
+    public int getClasificacion_Id() {
+        return clasificacion_Id;
+    }
+
+    public void setClasificacion_Id(int clasificacion_Id) {
+        this.clasificacion_Id = clasificacion_Id;
+    }
     
 }

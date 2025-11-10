@@ -40,6 +40,7 @@ public class ClasificacionesResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createClasificacion(ClasificacionRequest clasificacionRequest) {
+        System.out.println(clasificacionRequest.toString());
         ClasificacionService clasificacionService = new ClasificacionService();
         try {
             clasificacionService.createClasificacion(clasificacionRequest);
@@ -84,8 +85,13 @@ public class ClasificacionesResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByIntOrString(@PathParam("code") String code) {
+        String regex = "^\\+\\d+$";
+        
         ClasificacionService clasificacionService = new ClasificacionService();
         try {
+            if (code.matches(regex)) {
+                int x = Integer.parseInt("a");
+            }
             int id = Integer.parseInt(code);
             Clasificacion clasificacion = clasificacionService.getByInt(id);
             return Response.ok(new ClasificacionResponse(clasificacion)).build();

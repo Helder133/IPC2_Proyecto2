@@ -59,6 +59,7 @@ public class ClasificacionService {
     
     public void updateClasificacion (int code, ClasificacionUpdate clasificacionUpdate) throws UserDataInvalidException, SQLException, EntityAlreadyExistsException {
         Clasificacion clasificacion = extraerDatos(clasificacionUpdate);
+        clasificacion.setCasificacion_Id(code);
         ClasificacionDB clasificacionDB = new ClasificacionDB();
         if (clasificacionDB.verificarNewName(clasificacion)) {
             throw new EntityAlreadyExistsException(String.format("El nombre %s ya esta usado", clasificacion.getNombre()));

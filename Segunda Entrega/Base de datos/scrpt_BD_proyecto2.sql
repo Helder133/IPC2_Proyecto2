@@ -209,5 +209,4 @@ CREATE TABLE IF NOT EXISTS Bloqueo_Anuncio (
 	CONSTRAINT fk_Cine4 FOREIGN KEY (Cine_Id) REFERENCES Cine (Cine_Id) ON DELETE CASCADE
 );
 --Password: 1234
---INSERT INTO Usuario (Nombre, Email, Contraseña, Rol) VALUE ('Prueba1','1@gmail.com','MTIzNA==','Administrador_Sistema');
---UPDATE Usuario SET Email = 'adminSistema@gmail.com'WHERE Usuario_Id = 1;
+INSERT INTO Usuario (Nombre, Email, Contraseña, Rol) VALUE ('Prueba1','1@gmail.com','MTIzNA==','Administrador_Sistema');
