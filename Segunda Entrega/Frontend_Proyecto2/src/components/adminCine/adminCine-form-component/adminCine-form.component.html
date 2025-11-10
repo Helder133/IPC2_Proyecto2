@@ -1,0 +1,51 @@
+@if(operationDone) {
+<div class="alert alert-success d-flex align-items-center">
+    <i class="bi bi-check-circle flex-shrink-0 me-2"></i>
+    <div>
+        Operacion realizada con exito.
+    </div>
+</div>
+} @if(exception) {
+<div class="alert alert-danger d-md-flex justify-content-center align-items-center">
+    <i class="bi bi-x-circle flex-shrink-0 me-2"></i>
+    <div>
+        Error: {{mensajeError}}
+    </div>
+</div>
+}
+<div class="d-md-flex justify-content-center align-items-center">
+    <form [formGroup]="newAdminCineForm" (submit)="submit()">
+
+        <div class="col-12">
+            <label for="email" class="form-label">Email del futuro administrador:</label>
+            <input type="email" class="form-control" id="email" name="email" formControlName="email"
+                [class.is-invalid]="newAdminCineForm.controls['email'].dirty && newAdminCineForm.controls['email'].invalid">
+            @if (newAdminCineForm.controls['email'].invalid && newAdminCineForm.controls['email'].touched) {
+            <div class="invalid-feedback">
+                <div>
+                    Se debe ingresar un email valido, y que no sobrepase los 100 caracteres como maximo
+                </div>
+            </div>
+            }
+        </div>
+        <div class="col-12">
+            <label for="telefono" class="form-label">Telefono del cine ha administrar:</label>
+            <input type="text" class="form-control" id="telefono" name="telefono" formControlName="telefono"
+                [class.is-invalid]="newAdminCineForm.controls['telefono'].dirty && newAdminCineForm.controls['telefono'].invalid">
+            @if (newAdminCineForm.controls['telefono'].invalid && newAdminCineForm.controls['telefono'].touched) {
+            <div class="invalid-feedback">
+                <div>
+                    Se debe ingresar una contraseña con 50 caracteres como maximo
+                </div>
+            </div>
+            }
+        </div>
+        <hr class="my-4">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-secondary me-md-2" type="button" (click)="reset()">Limpiar</button>
+            <button class="btn btn-primary" type="submit" [disabled]="newAdminCineForm.invalid">
+                {{ isEditMode ? 'Guardar cambios' : 'Crear usuario' }}
+            </button>
+        </div>
+    </form>
+</div>

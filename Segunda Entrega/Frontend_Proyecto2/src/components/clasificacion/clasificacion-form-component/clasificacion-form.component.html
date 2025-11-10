@@ -1,0 +1,81 @@
+@if(operationDone) {
+<div class="alert alert-success d-flex align-items-center">
+    <i class="bi bi-check-circle flex-shrink-0 me-2"></i>
+    <div>
+        Operacion realizada con exito.
+    </div>
+</div>
+} @if(exception) {
+<div class="alert alert-danger d-md-flex justify-content-center align-items-center">
+    <i class="bi bi-x-circle flex-shrink-0 me-2"></i>
+    <div>
+        Error: {{mensajeError}}
+    </div>
+</div>
+}
+<div class="d-md-flex justify-content-center align-items-center">
+    <form [formGroup]="newClasificacionForm" (submit)="submit()">
+        <div class="row g-3">
+            <div class="col-12">
+                @if(!isEditMode) {
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="clasificacion_Id" name="clasificacion_Id"
+                        formControlName="clasificacion_Id" value="001" />
+                </div>
+                } @else {
+                <div class="form-group">
+                    <input type="hidden" name="clasificacion_Id" [value]="clasificacionToUpdate.clasificacion_Id" />
+                </div>
+                }
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre"
+                    [class.is-invalid]="newClasificacionForm.controls['nombre'].dirty && newClasificacionForm.controls['nombre'].invalid">
+                    @if (newClasificacionForm.controls['nombre'].invalid && newClasificacionForm.controls['nombre'].touched) {
+                    <div class="invalid-feedback">
+                        <div>
+                            Se debe ingresar un nombre con 200 caracteres como maximo
+                        </div>
+                    </div>
+                    }
+                </div>
+
+            </div>
+
+            <div class="col-12">
+                <label for="edadMinima" class="form-label">Edad Mínima:</label>
+                <input type="number" class="form-control" id="edadMinima" name="edadMinima" formControlName="edadMinima"
+                [class.is-invalid]="newClasificacionForm.controls['edadMinima'].dirty && newClasificacionForm.controls['edadMinima'].invalid">
+                @if (newClasificacionForm.controls['edadMinima'].invalid && newClasificacionForm.controls['edadMinima'].touched) {
+                <div class="invalid-feedback">
+                    <div>
+                        Se debe ingresar una edad minima valida
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="col-12">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <input type="text" class="form-control" id="descripcion" name="descripcion" formControlName="descripcion"
+                [class.is-invalid]="newClasificacionForm.controls['descripcion'].dirty && newClasificacionForm.controls['descripcion'].invalid">
+                @if (newClasificacionForm.controls['descripcion'].invalid && newClasificacionForm.controls['descripcion'].touched) {
+                <div class="invalid-feedback">
+                    <div>
+                        Se debe ingresar una descripción con 250 caracteres como maximo
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-secondary me-md-2" type="button" (click)="reset()">Limpiar</button>
+            <button class="btn btn-primary" type="submit" [disabled]="newClasificacionForm.invalid">
+                {{ isEditMode ? 'Guardar cambios' : 'Crear clasificación' }}
+            </button>
+        </div>
+    </form>
+</div>

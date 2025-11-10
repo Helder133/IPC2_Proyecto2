@@ -1,0 +1,21 @@
+<app-header></app-header>
+<div class="container text-center">
+    <a routerLink="/clasificaciones" class="btn btn-primary">
+        <i class="bi bi-arrow-left-square-fill"></i>
+        Ir a listado de clasificaciones
+    </a>
+</div>
+<div class="container">
+    <h1>Modificar clasificación {{ clasificacionCode }}</h1>
+    <div class="row">
+
+        @if (exists) {
+        <app-clasificacion-form [isEditMode]="true" [clasificacionToUpdate]="clasificacionToUpdate"></app-clasificacion-form>
+        }
+        @else {
+        <div class="alert alert-danger" role="alert">
+            No se encontro la clasificación con codigo {{clasificacionCode}}
+        </div>
+        }
+    </div>
+</div>

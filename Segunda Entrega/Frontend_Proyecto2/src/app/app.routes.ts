@@ -9,6 +9,11 @@ import { UpdateUserPageComponent } from '../pages/Users/update-user-page/update-
 import { CinesPageComponent } from '../pages/cine/cines-page/cines-page.component';
 import { CreateCinePageComponent } from '../pages/cine/create-cine-page/create-cine-page.component';
 import { UpdateCinePageComponent } from '../pages/cine/update-cine-page/update-cine-page.component';
+import { AdminCinePageComponent } from '../pages/admincine/adminCine-page/adminCine-page.component';
+import { CreateAdminCinePageComponent } from '../pages/admincine/create-adminCine-page/create-adminCine-page.component';
+import { ClasificacionPageComponent } from '../pages/clasificacion/clasificacion-page/clasificacion-page.component';
+import { UpdateClasificacionPageComponent } from '../pages/clasificacion/update-clasificacion-page/update-clasificacion-page.component';
+import { CreateClasificacionComponent } from '../pages/clasificacion/create-clasificacion-page/create-clasificacion-page.component';
 
 export const routes: Routes = [
     {
@@ -51,6 +56,36 @@ export const routes: Routes = [
     {
         path: 'cines/update/:code',
         component: UpdateCinePageComponent,
+        canActivate: [RoleGuardService],
+        data: { allowedRoles: [UsuarioTypeEnum.Administrador_Sistema] }
+    }, 
+    {
+        path: 'admincines',
+        component: AdminCinePageComponent,
+        canActivate: [RoleGuardService],
+        data: { allowedRoles: [UsuarioTypeEnum.Administrador_Sistema] }
+    },
+    {
+        path: 'admincines/new',
+        component: CreateAdminCinePageComponent,
+        canActivate: [RoleGuardService],
+        data: { allowedRoles: [UsuarioTypeEnum.Administrador_Sistema] }
+    },
+    {
+        path: 'clasificaciones',
+        component: ClasificacionPageComponent,
+        canActivate: [RoleGuardService],
+        data: { allowedRoles: [UsuarioTypeEnum.Administrador_Sistema] }
+    },
+    {
+        path: 'clasificaciones/new',
+        component: CreateClasificacionComponent,
+        canActivate: [RoleGuardService],
+        data: { allowedRoles: [UsuarioTypeEnum.Administrador_Sistema] }
+    },
+    {
+        path: 'clasificaciones/update/:code',
+        component: UpdateClasificacionPageComponent,
         canActivate: [RoleGuardService],
         data: { allowedRoles: [UsuarioTypeEnum.Administrador_Sistema] }
     }

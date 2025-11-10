@@ -1,0 +1,17 @@
+<div class="card p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+    <div class="card-header">
+        {{ selectedAdminCine.nombreUsuario }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ selectedAdminCine.nombreCine }}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Email del administrador: {{ selectedAdminCine.email }}</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Telefono del cine: {{ selectedAdminCine.telefono }}</h6>
+
+        @if(isAdmin) {
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+            title="Delete event {{ selectedAdminCine.usuario_Id }}" (click)="deleteAction()">
+            <i class="bi bi-trash"></i>
+        </button>
+        }
+    </div>
+</div>
